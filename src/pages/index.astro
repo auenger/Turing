@@ -1,0 +1,640 @@
+---
+import Layout from '../layouts/Layout.astro';
+import maChiPortrait from '../assets/team/ma-chi.jpg';
+import liXuetaoPortrait from '../assets/team/li-xuetao.jpg';
+import yangZhengwuPortrait from '../assets/team/yang-zhengwu-web.jpg';
+
+/* ---------- Agent 特区 · 七要素 ---------- */
+const elements = [
+  {
+    n: '01',
+    title: '明确的业务目标',
+    desc: '围绕一个可衡量的业务结果组织，而不是一次 AI 尝试。',
+  },
+  {
+    n: '02',
+    title: '专职负责人与团队',
+    desc: '业务负责人、流程负责人、操作人员和 FDE 一起工作。',
+  },
+  {
+    n: '03',
+    title: '定义清楚的工作流边界',
+    desc: '输入、系统、工具、交接点和审批点先被定义，再让 Agent 接入。',
+  },
+  {
+    n: '04',
+    title: '决策与权限规则',
+    desc: '决策、访问、审核、升级的规则先定清，Agent 在边界内执行。',
+  },
+  {
+    n: '05',
+    title: '绑定真实工作的 Agent 角色',
+    desc: 'Agent 角色对应真实任务，不是孤立工具。',
+  },
+  {
+    n: '06',
+    title: '人对交付负责',
+    desc: '人承担交付责任，Agent 产出可被审查、可被驳回。',
+  },
+];
+
+/* ---------- 运行机制 · 七步 ---------- */
+const steps = [
+  {
+    n: '1',
+    title: '组建团队',
+    detail: '业务负责人、流程负责人、操作人员、FDE',
+    note: '先把人对齐，再谈工具。',
+  },
+  {
+    n: '2',
+    title: '定义目标',
+    detail: '目标流程、范围、约束、ROI 指标',
+    note: '选一个有边界、高价值的切入点。',
+  },
+  {
+    n: '3',
+    title: '搭建工作流',
+    detail: '输入、系统、工具、交接点、审批关口',
+    note: '真实流程先跑通。',
+  },
+  {
+    n: '4',
+    title: '接入 Agent',
+    detail: 'Agent 角色、权限、规则、工具、审核关口',
+    note: 'Agent 在边界内上岗。',
+  },
+  {
+    n: '5',
+    title: '运行工作流',
+    detail: '真实工作、执行记录、人对结果负责',
+    note: '跑的是真实业务，不是 demo。',
+  },
+  {
+    n: '6',
+    title: '度量产出',
+    detail: '基线 vs. 结果、成本、周期、质量、规模',
+    note: '用前后对比证明回报。',
+  },
+  {
+    n: '7',
+    title: '迭代',
+    detail: '改进流程、Agent、规则、测试和交接资产',
+    note: '回到工作流，持续优化。',
+  },
+];
+
+/* ---------- 能力 ---------- */
+const capabilities = [
+  {
+    tag: 'AI Coding Agent',
+    title: '把研发链路沉淀成 Agent 可执行资产',
+    desc: '进入研发需求、设计、编码、测试、评审和交付文档链路，让每一个研发步骤都成为 Agent 可以接手、可以复用、可以验证的工作。',
+    points: ['需求澄清与模块拆分', '代码生成与代码评审', 'Playwright 自动化验证', '测试资产与交接文档沉淀'],
+  },
+  {
+    tag: '工业 Agent',
+    title: '在受控流程里执行企业 SOP',
+    desc: '接入真实软件和业务数据，执行企业 SOP，接受人工审核，在受控流程里完成真实任务，产出可审查、可追溯、可驳回。',
+    points: ['驱动真实工程软件', '参数边界与护栏', '独立验证关口', '升级路径与审计记录'],
+  },
+];
+
+/* ---------- 案例 ---------- */
+const cases = [
+  {
+    id: 'case-kreditz',
+    no: '案例 01',
+    name: 'Kreditz',
+    tag: '金融科技 · 研发交付',
+    headline: '边界清楚、验证扎实，Agent 才能真正工作。',
+    context:
+      '瑞典金融科技公司，业务为银行交易分类。当交付系统给出清晰边界和强验证时，Agent 才真正有效。',
+    metric: { big: '63 → 4.5', sub: '交付团队规模（人）' },
+    points: [
+      '0 行人手写代码即上线商业系统',
+      '更清晰的规格说明与模块化任务边界',
+      '多层测试 + 业务级基准数据集',
+      '人掌握验收标准，Agent 支撑实现与迭代',
+    ],
+    insight: 'Agent 在边界清楚、验证扎实的交付系统里，才真正工作。',
+  },
+  {
+    id: 'case-tianjin',
+    no: '案例 02',
+    name: '天津合众',
+    tag: 'ToB 软件交付 · 组织重构',
+    headline: 'AI 原生交付，首先是组织设计问题。',
+    context:
+      'ToB 企业，标准化产品 + 定制化交付。团队并非因为开始用编码工具而被改变，而是围绕小型 FDE 小队、Harness 工作流和持续度量重建了交付组织。',
+    metric: { big: '近 30%', sub: '团队利润率（原为个位数）' },
+    points: [
+      '5 角色跨职能 FDE 小队：PM、PO、2 TO、QO',
+      'Harness 工作流统一 12 类项目产物',
+      '绿地 + 棕地双试点先行',
+      '人工测试回归作为安全网',
+    ],
+    insight:
+      '胜利单元不是带着 AI 工具的个人，而是有清晰角色、共享工作流、强验证和迭代习惯的小型负责团队。',
+  },
+  {
+    id: 'case-thermal',
+    no: '案例 03',
+    name: '热仿真 Agent 特区',
+    tag: '专业工程 · 受控自动化',
+    headline: '专业工程流程，先划清边界。',
+    context:
+      '热设计仿真自动化可行性项目。FloTHERM 仍负责物理仿真，Agent 接手的是围绕它的重复性工作。',
+    metric: { big: '≤ 20', sub: '单次任务最大迭代次数 · 超限即升级工程师' },
+    points: [
+      '三段式：工程师控制 → Agent 执行 → 工程师确认',
+      '控制回路：运行 → 读取 → 调整 → 验证',
+      '独立验证 Agent 确认结果来自真实仿真输出',
+      '护栏：防篡改目标值，无法收敛即升级',
+    ],
+    insight:
+      '先固定专家规则、真实软件、验证关口和升级路径，再决定哪些环节适合交给 Agent 执行。',
+    dark: true,
+  },
+  {
+    id: 'case-public',
+    no: '案例 04',
+    name: '公共安全研判 Agent 特区',
+    tag: '运营类 Agent · 嵌入工作入口',
+    headline: '嵌入原有工作入口，输出可审查的证据链。',
+    context:
+      '一线用户在原工作入口提交问题，研判 Agent 关联案件数据、地图与规则，形成结构化建议，再由人工确认。',
+    metric: { big: '3 类', sub: '小案快破、动态巡防、群组助手' },
+    points: [
+      '消息入口 → 研判 Agent → 卡片 + 地图 → 人工确认',
+      '结果回写上下文，形成反馈闭环',
+      '按案件、角色、数据范围做权限隔离',
+      '验证矩阵：历史回放 → 决策 trace → 影子模式 → 上线',
+    ],
+    insight:
+      '运营类 Agent 要进入原有工作入口，输出可审查证据链，并保留人工确认和权限边界。',
+  },
+  {
+    id: 'case-semi',
+    no: '案例 05',
+    name: '半导体研发 Agent 特区',
+    tag: '研发流程 · 可复制产线',
+    headline: '从研发任务，到可复制产线。',
+    context:
+      '先在真实研发任务里跑通完整链路，证明内部流程可以被验证和复用，再判断哪些能力值得产品化。',
+    metric: { big: '5 步', sub: '需求澄清 → 模块拆分 → 代码生成 → Playwright 验证 → 测试资产沉淀' },
+    points: [
+      'Phase 1 已交付：真实任务跑通完整链路',
+      '抽取触发判断、流程骨架、关键约束、数据样本',
+      '应用方向：EAP 测机、LiteMES、内部提效',
+      '把一次性研发动作变成可复用 Agent 资产',
+    ],
+    insight:
+      '研发 Agent 特区先证明内部流程可以被验证和复用，再判断哪些能力值得产品化。',
+  },
+];
+
+/* ---------- 交付启动 · 试点结构 ---------- */
+const pilot = [
+  '一个真实工作流或团队',
+  '4-6 周试点周期',
+  '客户侧 3-5 名参与者',
+  '一名客户侧业务负责人',
+  '一名技术负责人',
+  '明确的验收证据与 ROI 指标',
+  '从第一天起的交接计划',
+];
+
+const agenda = [
+  '识别 AI 投入尚未产出清晰回报的业务领域',
+  '梳理候选工作流',
+  '选一个有边界、高价值的切入点',
+  '定义预期 ROI 与验收证据',
+  '确定第一个 Agent 特区试点',
+];
+
+const team = [
+  {
+    name: '马驰',
+    role: '联合创始人 / CEO',
+    image: maChiPortrait,
+    imagePosition: 'center 24%',
+    summary:
+      '负责公司战略与 Agent 工程实践。曾任 Kreditz 工程副总裁，并在华为瑞典、华为云和腾讯技术工程事业群任职。',
+    focus: 'AI 原生工程、FDE 交付体系、企业 Agent 落地',
+  },
+  {
+    name: '李雪涛',
+    role: '联合创始人 / AI 组织架构师',
+    image: liXuetaoPortrait,
+    imagePosition: 'center 18%',
+    summary:
+      '拥有土木工程与软件开发双重背景，13 年间从全栈工程师成长为研发副总，专注 AI 驱动的组织结构、质量体系与交付转型。',
+    focus: 'AI 组织设计、研发转型、质量与 Harness 体系',
+    profile: 'https://www.agentszone.ai/authors/li-xuetao',
+  },
+  {
+    name: '杨正武',
+    role: '联合创始人 / Chief Delivery Officer',
+    image: yangZhengwuPortrait,
+    imagePosition: 'center',
+    summary:
+      '负责客户交付与 FDE 体系，把业务问题拆解为可运行的工作流、系统连接、Agent 规则和可持续交接的工程资产。',
+    focus: 'FDE 交付、工作流架构、Agent 工程资产化',
+    profile: 'https://www.agentszone.ai/authors/yang-zhengwu',
+  },
+];
+---
+
+<Layout>
+  <span id="top"></span>
+
+  {/* ============================ HERO ============================ */}
+  <section class="relative flex min-h-[86dvh] items-center overflow-hidden pb-16 pt-24 md:min-h-[90dvh]">
+    <div class="container-wide">
+      <div class="max-w-[1100px]">
+        <p class="eyebrow" data-reveal>图凌人工智能</p>
+        <h1
+          class="display mt-6 max-w-[1100px] text-balance text-[44px] sm:text-[58px] lg:whitespace-nowrap lg:text-[68px] xl:text-[72px]"
+          data-reveal
+          data-reveal-delay="1"
+        >
+          把 Agent 放进真实业务流程。
+        </h1>
+        <p
+          class="mt-8 max-w-[620px] text-[18px] leading-relaxed text-sub md:text-[21px]"
+          data-reveal
+          data-reveal-delay="2"
+        >
+          从一个业务流程开始，让 Agent 在明确的责任、权限和验证机制中交付真实结果。
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="3">
+          <a href="#engagement" class="btn-pill btn-pill-primary">预约工作会议</a>
+          <a href="#concept" class="btn-pill btn-pill-ghost">了解 Agent 特区</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-line-soft bg-paper" aria-label="项目成果概览">
+    <div class="container-wide grid grid-cols-3 divide-x divide-line-soft">
+      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
+        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">63 → 4.5</div>
+        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">Kreditz 交付团队</div>
+      </div>
+      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
+        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">2-5×</div>
+        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">研发产能放大</div>
+      </div>
+      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
+        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">5</div>
+        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">真实行业案例</div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 问题判断 ============================ */}
+  <section id="problem" class="bg-dark px-5 py-[96px] text-white md:py-[140px]">
+    <div class="container-narrow">
+      <h2 class="display text-[32px] md:text-[52px]" data-reveal>
+        第一个挑战，已经从「理解 AI」<br class="hidden md:block" />转向「选出能产出可验证业务结果的运营区」。
+      </h2>
+      <div class="mt-12 grid gap-10 md:grid-cols-2 md:gap-16">
+        <div data-reveal data-reveal-delay="2">
+          <h3 class="text-[20px] font-semibold md:text-[24px]">AI 价值已经进入落地阶段</h3>
+          <p class="mt-4 text-[17px] leading-relaxed text-white/70">
+            管理层共识、专家输入、内部研究、工具试用和平台规划，让企业看清了 AI 可能产生价值的位置，
+            也看清了哪些问题需要先处理。
+          </p>
+        </div>
+        <div data-reveal data-reveal-delay="3">
+          <h3 class="text-[20px] font-semibold md:text-[24px]">下一步：先做出第一个 Agent 特区</h3>
+          <p class="mt-4 text-[17px] leading-relaxed text-white/70">
+            从足够具体、可以快速验证、后续能推广的流程开始，明确负责人、权限、规则、产出指标和每周推进节奏。
+          </p>
+        </div>
+      </div>
+      <p
+        class="mt-14 max-w-[820px] border-l-2 border-accent pl-6 text-[20px] leading-relaxed text-white/90 md:text-[24px]"
+        data-reveal
+      >
+        没有这个运营入口，AI 仍分散在有用的 demo、有前景的工具和个人生产力提升里，
+        组织仍指不出一个业务单元，让人和 Agent 每周一起工作并产出可验证的结果。
+      </p>
+    </div>
+  </section>
+
+  {/* ============================ 概念：什么是 Agent 特区 ============================ */}
+  <section id="concept" class="py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="mx-auto max-w-[820px] text-center">
+        <h2 class="display text-[32px] md:text-[52px]" data-reveal>
+          Agent 特区，是围绕一个业务结果<br class="hidden md:block" />组织起来的运行单元。
+        </h2>
+        <p class="mx-auto mt-6 max-w-[680px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
+          它有明确负责人、明确边界、明确权限和明确验收标准。AI 先进入这一小块真实工作，跑出可审查的产出。
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-px overflow-hidden rounded-[24px] border border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-3">
+        {
+          elements.map((el, i) => (
+            <div
+              class="bg-paper p-8 md:p-10"
+              data-reveal
+              data-reveal-delay={String((i % 3) + 1)}
+            >
+              <div class="text-[13px] font-semibold text-faint">{el.n}</div>
+              <h3 class="mt-3 text-[20px] font-semibold text-ink md:text-[22px]">{el.title}</h3>
+              <p class="mt-3 text-[15px] leading-relaxed text-sub">{el.desc}</p>
+            </div>
+          ))
+        }
+        <div class="bg-dark p-8 text-white sm:col-span-2 lg:col-span-3 md:p-10" data-reveal data-reveal-delay="1">
+          <div class="mx-auto max-w-[760px] text-center">
+            <div class="text-[13px] font-semibold text-accent">可衡量的业务回报</div>
+            <h3 class="mt-3 text-[20px] font-semibold md:text-[22px]">可证明是否有效的指标</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-white/70">
+              特区把 AI 战略变成一个可控的运营单元。它给 CEO 一个在全面铺开 AI 之前，先证明回报的地方。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 运行机制 ============================ */}
+  <section id="how" class="bg-paper py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="mx-auto max-w-[760px] text-center">
+        <h2 class="display text-[32px] md:text-[52px]" data-reveal>
+          运行规则先定清，<br class="hidden md:block" />Agent 才能真正进入工作。
+        </h2>
+        <p class="mx-auto mt-6 max-w-[640px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
+          Agent 特区从一个可衡量的业务回报目标开始。只有当团队、流程、控制和度量系统都清晰之后，Agent 才被接入。
+        </p>
+      </div>
+
+      <ol class="mt-16 grid gap-x-10 gap-y-12 md:grid-cols-2">
+        {
+          steps.map((s, i) => (
+            <li class="flex gap-6" data-reveal data-reveal-delay={String((i % 2) + 1)}>
+              <div class="text-[40px] font-semibold leading-none tracking-tight text-line md:text-[48px]">
+                {s.n}
+              </div>
+              <div class="border-t border-line-soft pt-3">
+                <h3 class="text-[20px] font-semibold text-ink md:text-[22px]">{s.title}</h3>
+                <p class="mt-1.5 text-[15px] text-faint">{s.detail}</p>
+                <p class="mt-2 text-[16px] leading-relaxed text-sub">{s.note}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mx-auto mt-16 max-w-[860px] rounded-[24px] border border-line-soft bg-canvas p-8 md:p-10" data-reveal>
+        <p class="text-[15px] font-semibold text-accent">这不是工具上线</p>
+        <p class="mt-3 text-[20px] font-medium leading-relaxed text-ink md:text-[24px]">
+          而是一个有边界、可拥有、可度量、可复制的运营单元。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 能力 ============================ */}
+  <section id="capability" class="py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="mx-auto max-w-[760px] text-center">
+        <h2 class="display text-[32px] md:text-[52px]" data-reveal>
+          从研发链路，到企业 SOP。
+        </h2>
+      </div>
+
+      <div class="mt-16 grid gap-6 lg:grid-cols-2">
+        {
+          capabilities.map((c, i) => (
+            <div
+              class="flex flex-col rounded-[28px] border border-line-soft bg-paper p-9 md:p-12"
+              data-reveal
+              data-reveal-delay={String(i + 1)}
+            >
+              <span class="text-[14px] font-semibold text-accent">{c.tag}</span>
+              <h3 class="mt-4 text-[26px] font-semibold leading-tight tracking-tight text-ink md:text-[30px]">
+                {c.title}
+              </h3>
+              <p class="mt-4 text-[17px] leading-relaxed text-sub">{c.desc}</p>
+              <ul class="mt-7 space-y-3 border-t border-line-soft pt-7">
+                {c.points.map((p) => (
+                  <li class="flex items-start gap-3 text-[15px] text-ink">
+                    <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 案例 ============================ */}
+  <section id="cases" class="bg-paper py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="mx-auto max-w-[760px] text-center">
+        <p class="eyebrow" data-reveal>真实案例</p>
+        <h2 class="display mt-5 text-[32px] md:text-[52px]" data-reveal data-reveal-delay="1">
+          已经在真实业务里跑通。
+        </h2>
+        <p class="mx-auto mt-6 max-w-[620px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
+          覆盖金融科技研发、ToB 软件交付、热仿真、公共安全研判与半导体研发，共五个 Agent 特区。
+        </p>
+      </div>
+
+      <div class="mt-16 flex flex-col gap-6 md:gap-8">
+        {
+          cases.map((c) => (
+            <article
+              id={c.id}
+              class:list={[
+                'scroll-mt-24 overflow-hidden rounded-[28px] border p-9 md:p-14',
+                c.dark ? 'border-transparent bg-dark text-white' : 'border-line-soft bg-canvas text-ink',
+              ]}
+              data-reveal
+            >
+              <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+                <div class="max-w-[560px]">
+                  <div class="flex items-center gap-3 text-[13px] font-semibold text-faint">
+                    <span class={c.dark ? 'text-accent' : 'text-accent'}>{c.no}</span>
+                    <span class="h-px w-6 bg-line" />
+                    <span>{c.tag}</span>
+                  </div>
+                  <h3 class="mt-5 text-[28px] font-semibold leading-tight tracking-tight md:text-[36px]">
+                    {c.name}
+                  </h3>
+                  <p class:list={[
+                    'mt-4 text-[19px] font-medium leading-relaxed md:text-[22px]',
+                    c.dark ? 'text-white/90' : 'text-ink',
+                  ]}>
+                    {c.headline}
+                  </p>
+                  <p class:list={['mt-4 text-[16px] leading-relaxed', c.dark ? 'text-white/60' : 'text-sub']}>
+                    {c.context}
+                  </p>
+                </div>
+
+                <div class="shrink-0 lg:max-w-[300px] lg:text-right">
+                  <div class:list={[
+                    'text-[44px] font-semibold leading-none tracking-tight md:text-[56px]',
+                    c.dark ? 'text-white' : 'text-ink',
+                  ]}>
+                    {c.metric.big}
+                  </div>
+                  <div class:list={['mt-3 text-[14px] leading-relaxed', c.dark ? 'text-white/60' : 'text-faint']}>
+                    {c.metric.sub}
+                  </div>
+                </div>
+              </div>
+
+              <ul class="mt-10 grid gap-x-8 gap-y-3 border-t border-line-soft pt-7 sm:grid-cols-2">
+                {c.points.map((p) => (
+                  <li class:list={['flex items-start gap-3 text-[15px]', c.dark ? 'text-white/80' : 'text-sub']}>
+                    <span class:list={['mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full', c.dark ? 'bg-accent' : 'bg-accent']} />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+
+              <p class:list={[
+                'mt-8 border-l-2 border-accent pl-5 text-[18px] leading-relaxed md:text-[20px]',
+                c.dark ? 'text-white/90' : 'text-ink',
+              ]}>
+                {c.insight}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 团队 ============================ */}
+  <section id="team" class="bg-paper py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="max-w-[780px]">
+        <p class="eyebrow" data-reveal>创始团队</p>
+        <h2 class="display mt-5 text-[34px] md:text-[54px]" data-reveal data-reveal-delay="1">
+          懂组织，也真正负责交付。
+        </h2>
+        <p class="mt-6 max-w-[680px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
+          三位联合创始人从战略、组织与交付三个维度共同进入客户现场，把 Agent 变成可运行的业务能力。
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-5 lg:grid-cols-12 lg:grid-rows-2">
+        <article class="group overflow-hidden rounded-[24px] border border-line-soft bg-canvas lg:col-span-5 lg:row-span-2" data-reveal>
+          <div class="aspect-[4/3] overflow-hidden bg-dark lg:aspect-[5/4]">
+            <img src={team[0].image.src} width={team[0].image.width} height={team[0].image.height} alt={`${team[0].name}，${team[0].role}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]" style={`object-position:${team[0].imagePosition}`} loading="lazy" decoding="async" />
+          </div>
+          <div class="p-7 md:p-9">
+            <p class="text-[14px] font-semibold text-accent">{team[0].role}</p>
+            <h3 class="mt-2 text-[30px] font-semibold tracking-tight text-ink">{team[0].name}</h3>
+            <p class="mt-4 text-[16px] leading-relaxed text-sub">{team[0].summary}</p>
+            <p class="mt-6 border-t border-line-soft pt-5 text-[14px] leading-relaxed text-faint">{team[0].focus}</p>
+          </div>
+        </article>
+
+        {team.slice(1).map((member, i) => (
+          <article class="group grid overflow-hidden rounded-[24px] border border-line-soft bg-canvas sm:grid-cols-[210px_1fr] lg:col-span-7" data-reveal data-reveal-delay={String(i + 1)}>
+            <div class="min-h-[260px] overflow-hidden bg-[#dce0e7] sm:min-h-full">
+              <img src={member.image.src} width={member.image.width} height={member.image.height} alt={`${member.name}，${member.role}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]" style={`object-position:${member.imagePosition}`} loading="lazy" decoding="async" />
+            </div>
+            <div class="flex flex-col p-7 md:p-8">
+              <p class="text-[14px] font-semibold text-accent">{member.role}</p>
+              <h3 class="mt-2 text-[27px] font-semibold tracking-tight text-ink">{member.name}</h3>
+              <p class="mt-3 text-[15px] leading-relaxed text-sub">{member.summary}</p>
+              <p class="mt-5 text-[13px] leading-relaxed text-faint">{member.focus}</p>
+              {member.profile && (
+                <a href={member.profile} target="_blank" rel="noreferrer" class="link-arrow mt-auto pt-5 text-[14px] font-medium" aria-label={`查看${member.name}在 Agent 特区的个人主页`}>
+                  查看社区主页
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="community-band mt-6 grid gap-8 rounded-[24px] border border-line-soft bg-canvas p-8 md:grid-cols-[0.72fr_1.28fr] md:p-11" data-reveal>
+        <div>
+          <p class="text-[14px] font-semibold text-accent">关联社区</p>
+          <div class="mt-3 text-[31px] font-semibold tracking-tight text-ink md:text-[38px]">Agent 特区</div>
+          <p class="mt-2 text-[14px] text-faint">AgentsZone.ai</p>
+        </div>
+        <div>
+          <h3 class="text-[24px] font-semibold leading-tight tracking-tight text-ink md:text-[30px]">公司交付与社区实践相互连接。</h3>
+          <p class="mt-4 max-w-[670px] text-[16px] leading-relaxed text-sub">
+            Agent 特区是由马驰创立的 AI Agent 工程实践者社区。图凌将企业交付中的真实问题带回社区讨论，也从全球实践者的经验中持续更新方法、工具与验证体系。
+          </p>
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <span class="text-[14px] text-faint">社区创始人：<strong class="font-semibold text-ink">马驰</strong></span>
+            <a href="https://www.agentszone.ai/" target="_blank" rel="noreferrer" class="link-arrow text-[14px] font-medium">访问 Agent 特区</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 交付与启动 ============================ */}
+  <section id="engagement" class="bg-dark px-5 py-[96px] text-white md:py-[140px]">
+    <div class="container-wide">
+      <div class="mx-auto max-w-[760px] text-center">
+        <h2 class="display text-[32px] md:text-[52px]" data-reveal>
+          从一个真实流程开始，<br class="hidden md:block" />证明回报，再扩展。
+        </h2>
+        <p class="mx-auto mt-6 max-w-[620px] text-[18px] leading-relaxed text-white/70 md:text-[20px]" data-reveal data-reveal-delay="2">
+          试点的成功不只看 demo，而看真实工作是否被完成、验证、改进并交接。
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-[28px] border border-white/15 p-9 md:p-12" data-reveal>
+          <h3 class="text-[22px] font-semibold">典型试点结构</h3>
+          <ul class="mt-7 space-y-3.5">
+            {
+              pilot.map((p) => (
+                <li class="flex items-start gap-3 text-[16px] leading-relaxed text-white/80">
+                  <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  {p}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="rounded-[28px] border border-white/15 p-9 md:p-12" data-reveal data-reveal-delay="1">
+          <h3 class="text-[22px] font-semibold">建议工作会议议程</h3>
+          <ol class="mt-7 space-y-5">
+            {
+              agenda.map((a, i) => (
+                <li class="flex gap-4 text-[16px] leading-relaxed text-white/80">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-[13px] font-semibold text-white">
+                    {i + 1}
+                  </span>
+                  <span class="pt-0.5">{a}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-16 max-w-[820px] rounded-[28px] border-l-2 border-accent bg-white/[0.03] p-9 text-center md:p-12" data-reveal>
+        <p class="text-[20px] font-medium leading-relaxed text-white md:text-[24px]">
+          试点成功的判断标准：不是 demo 本身，而是真实工作是否被完成、被验证、被改进，并形成可交接的资产。
+        </p>
+        <div class="mt-8">
+          <a href="mailto:yzw@imcoders.net" class="btn-pill btn-pill-primary">预约工作会议</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

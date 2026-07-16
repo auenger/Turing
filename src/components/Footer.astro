@@ -1,0 +1,78 @@
+---
+const year = new Date().getFullYear();
+
+const groups = [
+  {
+    title: '方案',
+    links: [
+      { href: '#concept', label: 'Agent 特区' },
+      { href: '#how', label: '运行机制' },
+      { href: '#capability', label: 'AI Coding Agent' },
+      { href: '#capability', label: '工业 Agent' },
+    ],
+  },
+  {
+    title: '案例',
+    links: [
+      { href: '#case-kreditz', label: 'Kreditz' },
+      { href: '#case-tianjin', label: '天津合众' },
+      { href: '#case-thermal', label: '热仿真' },
+      { href: '#case-public', label: '公共安全研判' },
+      { href: '#case-semi', label: '半导体研发' },
+    ],
+  },
+  {
+    title: '公司',
+    links: [
+      { href: '#team', label: '团队' },
+      { href: 'https://www.agentszone.ai/', label: 'Agent 特区社区', external: true },
+      { href: '#engagement', label: '交付与启动' },
+      { href: '#engagement', label: '预约工作会议' },
+    ],
+  },
+];
+---
+
+<footer class="border-t border-line-soft bg-canvas">
+  <div class="container-wide py-14 md:py-20">
+    <div class="grid gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+      <div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="text-xl font-semibold tracking-tight text-ink">图凌</span>
+          <span class="text-[12px] font-medium tracking-wide text-faint">TuLing AI</span>
+        </div>
+        <p class="mt-4 max-w-xs text-sm leading-relaxed text-sub">
+          深圳市图凌人工智能有限公司。以 Agent 特区承接 AI 战略，把试点放进有边界的真实工作。
+        </p>
+      </div>
+
+      {
+        groups.map((g) => (
+          <div>
+            <h4 class="text-[12px] font-semibold uppercase tracking-wider text-faint">
+              {g.title}
+            </h4>
+            <ul class="mt-4 space-y-2.5 text-sm text-sub">
+              {g.links.map((l) => (
+                <li>
+                  <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noreferrer' : undefined} class="transition-colors hover:text-ink">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-3 border-t border-line-soft pt-6 text-xs text-faint md:flex-row md:items-center md:justify-between"
+    >
+      <p>© {year} 深圳市图凌人工智能有限公司</p>
+      <p class="md:text-right">
+        深圳市前海深港合作区南山街道兴海大道 3044 号信利康大厦 8C-03K
+      </p>
+    </div>
+  </div>
+</footer>

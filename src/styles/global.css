@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+/* ============================================================
+   设计 Token：冷静的技术中性色 + 图凌品牌红
+   ============================================================ */
+@theme {
+  /* 文字 */
+  --color-ink: #171923;
+  --color-sub: #5f6674;
+  --color-faint: #7c8492;
+
+  /* 表面 */
+  --color-canvas: #f6f7fa;
+  --color-paper: #ffffff;
+  --color-line: #cfd3db;
+  --color-line-soft: #e4e7ec;
+
+  /* 深色区块 */
+  --color-dark: #11131a;
+  --color-dark-2: #1a1d26;
+
+  /* 强调色 */
+  --color-accent: #d4143c;
+  --color-accent-hover: #b90d31;
+
+  /* 正文字体：苹果设备自动用 SF Pro / PingFang */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Source Han Sans SC", "Noto Sans SC", sans-serif;
+
+  /* 品牌 logo 字「图凌」使用系统宋体 */
+  --font-brand: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong",
+    "SimSun", serif;
+
+  /* 圆角 */
+  --radius-card: 22px;
+  --radius-card-lg: 28px;
+}
+
+/* ============================================================
+   基础重置
+   ============================================================ */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    color-scheme: light;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-canvas);
+    background-image: radial-gradient(circle at 92% 4%, rgb(212 20 60 / 0.055), transparent 28rem);
+    background-attachment: fixed;
+    letter-spacing: -0.003em;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+}
+
+/* ============================================================
+   复用工具类
+   ============================================================ */
+@layer components {
+  .container-narrow {
+    width: 100%;
+    max-width: 980px;
+    margin-inline: auto;
+    padding-inline: 22px;
+  }
+  .container-wide {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 22px;
+  }
+
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--color-accent);
+  }
+
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+  }
+
+  /* 交互控件采用 12px 圆角，内容容器采用 24px 圆角 */
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 400;
+    white-space: nowrap;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-pill-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn-pill-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+  }
+  .btn-pill-ghost {
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+  }
+  .btn-pill-ghost:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn-pill:active {
+    transform: translateY(1px) scale(0.99);
+  }
+  .btn-pill-light {
+    background: #fff;
+    color: var(--color-ink);
+  }
+  .btn-pill-light:hover {
+    background: #f0f0f5;
+  }
+
+  /* 文字链接 + 箭头 */
+  .link-arrow {
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .link-arrow:hover {
+    text-decoration: underline;
+  }
+  .link-arrow::after {
+    content: "›";
+    font-size: 1.15em;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+}
+
+/* ============================================================
+   滚动入场动画（克制，配合 IntersectionObserver）
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+[data-reveal].reveal-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+[data-reveal-delay="1"] { transition-delay: 0.08s; }
+[data-reveal-delay="2"] { transition-delay: 0.16s; }
+[data-reveal-delay="3"] { transition-delay: 0.24s; }
+[data-reveal-delay="4"] { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-ink: #f1f3f6;
+  --color-sub: #b4bac5;
+  --color-faint: #939ba8;
+  --color-canvas: #11131a;
+  --color-paper: #191c24;
+  --color-line: #414652;
+  --color-line-soft: #2d313b;
+  --color-dark: #0c0e13;
+  --color-dark-2: #151821;
+  --color-accent: #ff6682;
+  --color-accent-hover: #ff8299;
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(circle at 92% 4%, rgb(212 20 60 / 0.1), transparent 28rem);
+}
+
+.theme-label-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-label-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-label-dark {
+  display: inline;
+}

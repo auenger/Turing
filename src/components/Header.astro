@@ -1,0 +1,217 @@
+---
+/* 顶部导航：logo 左、导航居中、CTA 右、hover mega menu、移动端汉堡 */
+
+const schemeIcons: Record<string, string> = {
+  Agent特区: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="2.4"/>',
+  运行机制: '<path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.5 4.5V9H16"/>',
+  AICodingAgent: '<path d="M9 8l-4 4 4 4"/><path d="M15 8l4 4-4 4"/>',
+  工业Agent: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/><path d="M16.4 15.8l1.7 1.7 2.9-2.9"/>',
+};
+const iconKey = (t: string) => t.replace(/\s/g, '');
+const base = import.meta.env.BASE_URL;
+
+const menuGroups = [
+  {
+    label: '方案',
+    kicker: 'Agent 特区 · 方法论',
+    title: '把 AI 战略变成可控的运营单元',
+    summary: '明确的负责人、边界、权限与验收标准，让 Agent 先进入一小块真实工作。',
+    items: [
+      { href: '#concept', title: 'Agent 特区', en: 'Concept', desc: '围绕一个业务结果组织运行单元' },
+      { href: '#how', title: '运行机制', en: 'How it runs', desc: '七步把 Agent 接入真实工作' },
+      { href: '#capability', title: 'AI Coding Agent', en: 'Coding Agent', desc: '研发链路沉淀为可执行资产' },
+      { href: '#capability', title: '工业 Agent', en: 'Industrial Agent', desc: '受控执行企业 SOP' },
+    ],
+  },
+  {
+    label: '案例',
+    kicker: '在真实业务里跑通',
+    title: '五个 Agent 特区',
+    summary: '覆盖金融科技、软件交付、工程仿真、公共安全与半导体研发。',
+    items: [
+      { href: '#case-kreditz', title: 'Kreditz', en: '金融科技', desc: '63 → 4.5 人，0 行手写代码' },
+      { href: '#case-tianjin', title: '天津合众', en: '软件交付', desc: '组织重构，利润率近 30%' },
+      { href: '#case-thermal', title: '热仿真', en: '工程仿真', desc: 'FloTHERM + Agent 控制回路' },
+      { href: '#case-public', title: '公共安全研判', en: '公共安全', desc: '嵌入工作入口的证据链' },
+      { href: '#case-semi', title: '半导体研发', en: '半导体', desc: '可验证、可复制的产线' },
+    ],
+  },
+];
+
+const plainLinks = [
+  { href: '#team', label: '团队' },
+  { href: 'https://www.agentszone.ai/', label: '社区', external: true },
+  { href: '#engagement', label: '交付启动' },
+];
+---
+
+<header id="site-header" class="fixed inset-x-0 top-0 z-50">
+  <div class="mx-auto flex h-14 max-w-[1200px] items-center gap-3 px-5 lg:gap-4 lg:px-6">
+    <!-- Logo -->
+    <a href="#top" class="flex shrink-0 items-center gap-2.5">
+      <span class="flex h-8 w-12 items-center justify-center">
+        <img src={`${base}/AHLogo-web.png`} alt="图凌 TuLing AI" class="h-auto w-full object-contain" width="48" height="30" />
+      </span>
+      <span class="font-brand text-[23px] font-bold leading-none tracking-[0.06em] text-ink">图凌</span>
+    </a>
+
+    <!-- 居中导航 -->
+    <nav class="hidden flex-1 items-center justify-center gap-0.5 lg:flex" aria-label="主导航">
+      {
+        menuGroups.map((g) => (
+          <div class="group relative">
+            <button class="flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-sub transition-colors group-hover:text-ink">
+              {g.label}
+              <svg class="h-3.5 w-3.5 text-faint transition group-hover:text-accent" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.51a.75.75 0 0 1-1.08 0l-4.25-4.51a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            {/* mega menu */}
+            <div class="mega-panel absolute left-1/2 top-full pt-3">
+              <div class="w-[640px] max-w-[92vw] rounded-2xl border border-line-soft bg-paper p-3 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.22)]">
+                <div class="grid grid-cols-[1.25fr_1.75fr] gap-2">
+                  <div class="rounded-xl bg-canvas p-5">
+                    <p class="text-[12px] font-semibold uppercase tracking-wider text-accent">{g.kicker}</p>
+                    <h3 class="mt-2 text-[17px] font-semibold leading-snug text-ink">{g.title}</h3>
+                    <p class="mt-2 text-[13px] leading-relaxed text-sub">{g.summary}</p>
+                  </div>
+                  <div class="grid grid-cols-1 gap-0.5 p-1">
+                    {g.items.map((it) => (
+                      <a href={it.href} class="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-canvas">
+                        {g.label === '方案' ? (
+                          <span class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink text-white">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={schemeIcons[iconKey(it.title)]} />
+                          </span>
+                        ) : (
+                          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        )}
+                        <span class="min-w-0">
+                          <span class="flex items-baseline gap-2">
+                            <span class="text-[14px] font-semibold text-ink">{it.title}</span>
+                            <span class="text-[11px] text-faint">{it.en}</span>
+                          </span>
+                          <span class="mt-0.5 block text-[12.5px] leading-snug text-sub">{it.desc}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+      {
+        plainLinks.map((l) => (
+          <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noreferrer' : undefined} class="rounded-full px-3.5 py-2 text-[14px] font-medium text-sub transition-colors hover:text-ink">
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- 右侧 CTA + 汉堡 -->
+    <div class="ml-auto flex items-center gap-2">
+      <a href="#engagement" class="btn-pill btn-pill-primary hidden !px-4 !py-2 !text-[13px] sm:inline-flex">预约工作会议</a>
+      <button id="theme-toggle" class="grid h-9 w-9 place-items-center rounded-[10px] text-[20px] leading-none text-sub transition-colors hover:bg-paper hover:text-ink" type="button" aria-label="切换为暗色主题">
+        <span class="theme-label-light font-sans" aria-hidden="true">&#x263E;&#xFE0E;</span>
+        <span class="theme-label-dark font-sans" aria-hidden="true">&#x263C;&#xFE0E;</span>
+      </button>
+      <button id="mobile-toggle" class="grid h-9 w-9 place-items-center rounded-[10px] text-ink transition hover:bg-paper lg:hidden" aria-label="打开菜单" aria-expanded="false">
+        <svg class="icon-open h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" /></svg>
+        <svg class="icon-close hidden h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 移动端抽屉 -->
+  <div id="mobile-panel" class="hidden border-t border-line-soft bg-paper lg:hidden">
+    <div class="mx-auto max-h-[78vh] max-w-[1200px] overflow-y-auto px-5 py-3">
+      {
+        menuGroups.map((g) => (
+          <div class="py-2">
+            <p class="px-1 pb-1 text-[12px] font-semibold uppercase tracking-wider text-faint">{g.label}</p>
+            {g.items.map((it) => (
+              <a href={it.href} class="flex items-baseline justify-between rounded-lg px-2 py-2.5 text-[15px] text-ink hover:bg-canvas">
+                <span>{it.title}</span>
+                <span class="text-[12px] text-faint">{it.en}</span>
+              </a>
+            ))}
+          </div>
+        ))
+      }
+      <div class="grid grid-cols-1 border-t border-line-soft pt-2">
+        {
+          plainLinks.map((l) => (
+            <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noreferrer' : undefined} class="rounded-lg px-2 py-2.5 text-[15px] text-ink hover:bg-canvas">
+              {l.label}
+            </a>
+          ))
+        }
+      </div>
+      <a href="#engagement" class="btn-pill btn-pill-primary mt-3 w-full">预约工作会议</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  #site-header {
+    background: rgba(251, 251, 253, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--color-line-soft);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  :global(html[data-theme="dark"]) #site-header { background: rgba(17, 19, 26, 0.84); }
+
+  /* mega menu 显隐，支持 group-hover 与 focus-within */
+  .mega-panel {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  }
+  .group:hover .mega-panel,
+  .group:focus-within .mega-panel {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const syncThemeToggle = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    themeToggle?.setAttribute('aria-label', dark ? '切换为亮色主题' : '切换为暗色主题');
+  };
+  syncThemeToggle();
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem('tuling-theme', nextTheme);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', nextTheme === 'dark' ? '#11131a' : '#f6f7fa');
+    syncThemeToggle();
+  });
+
+  // 移动端汉堡抽屉
+  const toggle = document.getElementById('mobile-toggle');
+  const panel = document.getElementById('mobile-panel');
+  const iconOpen = toggle?.querySelector('.icon-open');
+  const iconClose = toggle?.querySelector('.icon-close');
+  const setOpen = (open: boolean) => {
+    panel?.classList.toggle('hidden', !open);
+    iconOpen?.classList.toggle('hidden', open);
+    iconClose?.classList.toggle('hidden', !open);
+    toggle?.setAttribute('aria-expanded', String(open));
+  };
+  toggle?.addEventListener('click', () => {
+    setOpen(panel?.classList.contains('hidden') ?? false);
+  });
+  panel?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => setOpen(false))
+  );
+</script>
