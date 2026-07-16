@@ -2,6 +2,7 @@
   "name": "tuling-ai",
   "type": "module",
   "version": "0.1.0",
+  "packageManager": "pnpm@10.29.2",
   "engines": {
     "node": ">=22.12.0"
   },
