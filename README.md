@@ -1,6 +1,6 @@
-# 图凌人工智能官网
+# 硅基源流 SiliconSource 官网
 
-图凌人工智能官方网站，使用 Astro 及 Tailwind CSS 构建。
+硅基源流人工智能官方网站，使用 Astro 及 Tailwind CSS 构建。
 
 ## 本地开发
 
@@ -23,8 +23,10 @@ pnpm astro dev stop
 pnpm build
 ```
 
-## GitHub Pages
+## 域名部署
 
-推送到 `main` 分支后，GitHub Actions 会自动构建并发布：
+推送到 `main` 分支后，GitHub Actions 会自动构建并通过 GitHub Pages 部署到：
 
-<https://auenger.github.io/Turing/>
+<https://siliconsource.cn>
+
+自定义域名通过 `CNAME` 文件配置。

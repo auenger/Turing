@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = '图凌人工智能 · 把 Agent 放进真实业务流程',
-  description = '图凌人工智能以 Agent 特区承接 AI 战略，由 FDE 团队嵌入业务现场，把试点放进有边界的真实工作，交付可运行、可衡量、可复盘的业务流程。',
+  title = '硅基源流 SiliconSource · 把 Agent 放进真实业务流程',
+  description = '硅基源流 SiliconSource 以 Agent 特区承接 AI 战略，由 FDE 团队嵌入业务现场，把试点放进有边界的真实工作，交付可运行、可衡量、可复盘的业务流程。',
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
@@ -30,7 +30,7 @@ const base = import.meta.env.BASE_URL;
     <meta name="theme-color" content="#f6f7fa" />
     <script is:inline>
       try {
-        const savedTheme = localStorage.getItem('tuling-theme');
+        const savedTheme = localStorage.getItem('siliconsource-theme');
         const theme = savedTheme === 'dark' ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#11131a' : '#f6f7fa');

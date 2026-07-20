@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   设计 Token：冷静的技术中性色 + 图凌品牌红
+   设计 Token：冷静的技术中性色 + 硅基源流品牌红
    ============================================================ */
 @theme {
   /* 文字 */
@@ -28,7 +28,7 @@
     "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "Source Han Sans SC", "Noto Sans SC", sans-serif;
 
-  /* 品牌 logo 字「图凌」使用系统宋体 */
+  /* 品牌 logo 字「硅基源流」使用系统宋体 */
   --font-brand: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong",
     "SimSun", serif;
 

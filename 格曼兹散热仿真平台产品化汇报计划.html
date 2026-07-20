@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="格曼兹散热仿真平台产品化升级方案，涵盖 Web 重构、任务建单、Agent 人机协同与钉钉接入。">
+  <title>格曼兹散热仿真平台 | 产品化升级方案</title>
+  <style>
+    :root {
+      --paper: #f5f7f6;
+      --surface: #ffffff;
+      --surface-soft: #edf2ef;
+      --ink: #17201c;
+      --muted: #64716a;
+      --line: #d9e1dc;
+      --accent: #087a55;
+      --accent-dark: #075b42;
+      --accent-soft: #dff2e9;
+      --warning: #a25b13;
+      --warning-soft: #fff1dc;
+      --radius: 16px;
+      --shadow: 0 18px 48px rgba(35, 61, 49, 0.09);
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 88% 3%, rgba(8, 122, 85, 0.09), transparent 25rem),
+        var(--paper);
+      font-family: "SF Pro Display", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button { font: inherit; }
+
+    .shell {
+      width: min(calc(100% - 48px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 72px;
+      border-bottom: 1px solid rgba(217, 225, 220, 0.8);
+      background: rgba(245, 247, 246, 0.9);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #f8fffb;
+      background: var(--accent);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav a {
+      padding: 9px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--ink);
+      border-color: var(--accent);
+    }
+
+    .print-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .print-button:hover { border-color: var(--accent); }
+    .print-button:active { transform: translateY(1px); }
+
+    .hero {
+      min-height: calc(100dvh - 72px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+      align-items: center;
+      gap: 72px;
+      padding: 68px 0;
+    }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 24px;
+      font-size: clamp(46px, 6.2vw, 82px);
+      line-height: 1.04;
+      letter-spacing: -0.055em;
+    }
+
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 620px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: clamp(17px, 1.7vw, 21px);
+      line-height: 1.75;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 0 22px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .button.primary { color: #f7fffb; background: var(--accent); }
+    .button.secondary { color: var(--accent-dark); background: transparent; }
+    .button:hover { transform: translateY(-2px); }
+    .button:active { transform: translateY(1px); }
+
+    .hero-visual {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+    }
+
+    .system-map {
+      position: relative;
+      width: min(100%, 480px);
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: var(--shadow);
+    }
+
+    .system-map::before,
+    .system-map::after {
+      content: "";
+      position: absolute;
+      inset: 13%;
+      border: 1px dashed #b9c8c0;
+      border-radius: 50%;
+    }
+
+    .system-map::after { inset: 30%; }
+
+    .map-core,
+    .map-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: var(--radius);
+      font-weight: 720;
+    }
+
+    .map-core {
+      z-index: 2;
+      inset: 36%;
+      color: #f7fffb;
+      background: var(--accent);
+      box-shadow: 0 14px 34px rgba(8, 122, 85, 0.25);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .map-node {
+      z-index: 3;
+      width: 116px;
+      min-height: 70px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: 0 10px 25px rgba(35, 61, 49, 0.08);
+      font-size: 14px;
+    }
+
+    .map-node.web { top: 3%; left: 37%; }
+    .map-node.agent { top: 37%; right: -3%; }
+    .map-node.engineer { bottom: 3%; left: 37%; }
+    .map-node.ding { top: 37%; left: -3%; }
+
+    .map-caption {
+      position: absolute;
+      right: 2%;
+      bottom: 2%;
+      max-width: 210px;
+      padding: 13px 16px;
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    section.content-section { padding: 104px 0; }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 48px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 18px;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+    }
+
+    .section-heading p {
+      max-width: 65ch;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 0.55fr;
+      gap: 18px;
+    }
+
+    .summary-main,
+    .summary-side,
+    .feature-panel,
+    .confirmation-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .summary-main {
+      min-height: 360px;
+      padding: 42px;
+      background:
+        linear-gradient(125deg, rgba(8, 122, 85, 0.96), rgba(5, 79, 57, 0.96)),
+        var(--accent-dark);
+      color: #f3fff9;
+      overflow: hidden;
+    }
+
+    .summary-main h3 {
+      max-width: 680px;
+      margin-bottom: 28px;
+      font-size: clamp(30px, 3.4vw, 48px);
+      line-height: 1.14;
+      letter-spacing: -0.035em;
+    }
+
+    .summary-main p {
+      max-width: 670px;
+      color: rgba(243, 255, 249, 0.78);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .summary-rule {
+      width: 88px;
+      height: 4px;
+      margin-top: 36px;
+      border-radius: 4px;
+      background: #9ee1c4;
+    }
+
+    .summary-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 34px;
+    }
+
+    .summary-side strong {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 58px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .summary-side p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .summary-side small {
+      display: block;
+      margin-top: 34px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 36px;
+      align-items: start;
+    }
+
+    .side-menu {
+      position: sticky;
+      top: 104px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .side-menu h3 { margin-bottom: 18px; font-size: 16px; }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 0;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .menu-item:last-child { border-bottom: 0; }
+
+    .menu-key {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 8px;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .page-card {
+      min-height: 220px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .page-card:nth-child(1),
+    .page-card:nth-child(4) { background: var(--surface-soft); }
+
+    .page-card h3 { margin-bottom: 14px; font-size: 21px; }
+    .page-card p { color: var(--muted); line-height: 1.75; }
+
+    .page-card ul {
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 9px;
+      font-size: 14px;
+    }
+
+    .page-card li::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 10px;
+      border-radius: 2px;
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .wizard {
+      position: relative;
+      display: grid;
+      gap: 0;
+      padding-left: 72px;
+    }
+
+    .wizard::before {
+      content: "";
+      position: absolute;
+      top: 28px;
+      bottom: 28px;
+      left: 28px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .wizard-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 28px;
+      min-height: 136px;
+      padding: 25px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wizard-step:last-child { border-bottom: 0; }
+
+    .wizard-step::before {
+      content: attr(data-key);
+      position: absolute;
+      left: -72px;
+      top: 22px;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      color: var(--accent-dark);
+      background: var(--paper);
+      font-weight: 800;
+    }
+
+    .wizard-step h3 { margin: 7px 0 0; font-size: 20px; }
+    .wizard-step p { margin: 0; color: var(--muted); line-height: 1.75; }
+
+    .flow-board {
+      padding: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .flow-row + .flow-row { margin-top: 14px; }
+
+    .flow-node {
+      position: relative;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-soft);
+    }
+
+    .flow-node.accent { color: #f4fff9; background: var(--accent); border-color: var(--accent); }
+    .flow-node.warning { background: var(--warning-soft); border-color: #eed1a8; }
+    .flow-node.wide { grid-column: span 2; }
+    .flow-node strong { font-size: 17px; }
+    .flow-node span { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .flow-node.accent span { color: rgba(244, 255, 249, 0.76); }
+
+    .flow-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .legend-swatch.agent { background: var(--accent); border-color: var(--accent); }
+    .legend-swatch.human { background: var(--warning-soft); border-color: #eed1a8; }
+
+    .boundary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .boundary {
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+    }
+
+    .boundary.allowed { background: var(--accent-soft); }
+    .boundary.denied { background: #f4ece9; }
+    .boundary h3 { margin-bottom: 18px; }
+
+    .boundary-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+    }
+
+    .gateway-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 54px;
+      align-items: center;
+    }
+
+    .gateway-stack { display: grid; gap: 12px; }
+
+    .gateway-layer {
+      position: relative;
+      padding: 25px 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 10px 24px rgba(35, 61, 49, 0.05);
+    }
+
+    .gateway-layer:nth-child(2) {
+      margin-left: 34px;
+      color: #f5fff9;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .gateway-layer:nth-child(3) { margin-left: 68px; background: var(--surface-soft); }
+    .gateway-layer h3 { margin-bottom: 8px; font-size: 19px; }
+    .gateway-layer p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .gateway-layer:nth-child(2) p { color: rgba(245, 255, 249, 0.75); }
+
+    .gateway-copy h2 {
+      margin-bottom: 20px;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+    }
+
+    .gateway-copy > p { color: var(--muted); font-size: 17px; line-height: 1.75; }
+
+    .gateway-capabilities {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .capability {
+      padding: 17px 18px;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      font-weight: 700;
+    }
+
+    .implementation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .feature-panel { padding: 32px; }
+    .feature-panel:nth-child(1) { grid-row: span 2; background: var(--accent-dark); color: #f3fff9; }
+    .feature-panel:nth-child(4) { background: var(--surface-soft); }
+    .feature-panel h3 { margin-bottom: 18px; font-size: 23px; }
+
+    .feature-list {
+      display: grid;
+      gap: 13px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .feature-panel:nth-child(1) .feature-list { color: rgba(243, 255, 249, 0.74); }
+
+    .feature-list li {
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.65em;
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .feature-panel:nth-child(1) .feature-list li::before { background: #9ee1c4; }
+
+    .confirmations {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .confirmation-panel { padding: 30px; }
+
+    .confirmation-panel h3 {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 13px;
+      font-size: 19px;
+    }
+
+    .confirmation-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      font-size: 13px;
+    }
+
+    .confirmation-panel p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .closing {
+      margin: 104px auto 42px;
+      padding: 62px;
+      border-radius: var(--radius);
+      color: #f5fff9;
+      background: var(--accent-dark);
+    }
+
+    .closing h2 {
+      max-width: 820px;
+      margin-bottom: 20px;
+      font-size: clamp(34px, 4.5vw, 58px);
+      line-height: 1.1;
+      letter-spacing: -0.045em;
+    }
+
+    .closing p {
+      max-width: 760px;
+      margin-bottom: 28px;
+      color: rgba(245, 255, 249, 0.75);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .closing .button.secondary { color: #f5fff9; border-color: rgba(245, 255, 249, 0.7); }
+
+    footer {
+      padding: 24px 0 42px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .nav { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 22px; }
+      .hero-visual { min-height: 460px; }
+      .summary-grid, .gateway-layout { grid-template-columns: 1fr; }
+      .architecture { grid-template-columns: 1fr; }
+      .side-menu { position: static; display: none; }
+      .flow-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow-node.wide { grid-column: span 1; }
+    }
+
+    @media (max-width: 700px) {
+      .shell { width: min(calc(100% - 32px), var(--max)); }
+      .topbar { height: 64px; }
+      .brand span:last-child { display: none; }
+      .print-button { padding: 9px 13px; font-size: 13px; }
+      .hero { min-height: auto; padding: 64px 0 56px; }
+      h1 { font-size: clamp(42px, 13vw, 62px); }
+      section.content-section { padding: 72px 0; }
+      .hero-visual { min-height: 370px; }
+      .system-map { width: min(90vw, 360px); }
+      .map-node { width: 94px; min-height: 58px; padding: 9px; font-size: 12px; }
+      .map-caption { display: none; }
+      .summary-main, .summary-side, .flow-board, .feature-panel, .confirmation-panel { padding: 25px; }
+      .page-grid, .boundary-grid, .implementation-grid, .confirmations { grid-template-columns: 1fr; }
+      .wizard { padding-left: 54px; }
+      .wizard::before { left: 21px; }
+      .wizard-step { grid-template-columns: 1fr; gap: 10px; }
+      .wizard-step::before { left: -54px; width: 44px; height: 44px; top: 22px; }
+      .wizard-step h3 { margin-top: 0; }
+      .flow-row { grid-template-columns: 1fr; }
+      .gateway-layer:nth-child(2), .gateway-layer:nth-child(3) { margin-left: 0; }
+      .gateway-capabilities { grid-template-columns: 1fr; }
+      .feature-panel:nth-child(1) { grid-row: auto; }
+      .closing { margin-top: 72px; padding: 34px 26px; }
+      .footer-inner { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media print {
+      :root { --paper: #ffffff; }
+      body { background: #ffffff; }
+      .topbar, .hero-actions, .closing .button { display: none !important; }
+      .hero { min-height: auto; padding: 36px 0 64px; page-break-after: always; }
+      .hero-visual { min-height: 430px; }
+      section.content-section { padding: 44px 0; break-inside: avoid; }
+      .side-menu { position: static; }
+      .reveal { opacity: 1; transform: none; }
+      .closing { margin-top: 50px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-mark">GM</span>
+        <span>格曼兹散热仿真平台</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#overview">升级方向</a>
+        <a href="#web">Web 架构</a>
+        <a href="#workflow">人机协同</a>
+        <a href="#dingtalk">钉钉接入</a>
+        <a href="#delivery">功能计划</a>
+        <a href="#confirm">客户确认</a>
+      </nav>
+      <button class="print-button" type="button" onclick="window.print()">打印或导出 PDF</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="shell hero">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">PRODUCTIZATION PROPOSAL</p>
+        <h1>从仿真 Demo 到工程协作平台</h1>
+        <p>围绕任务建单、散热求解、Agent 方案建议、人工决策和企业通知，建立完整、可控、可追溯的产品闭环。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#overview">查看升级方案</a>
+          <a class="button secondary" href="#confirm">客户确认事项</a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-label="平台协同关系图">
+        <div class="system-map">
+          <div class="map-core">仿真<br>任务中心</div>
+          <div class="map-node web">Web<br>产品界面</div>
+          <div class="map-node agent">诊断<br>Agent</div>
+          <div class="map-node engineer">工程师<br>人工决策</div>
+          <div class="map-node ding">钉钉<br>协同入口</div>
+        </div>
+        <div class="map-caption">统一任务状态、审批决策、模型版本和操作审计</div>
+      </div>
+    </div>
+
+    <section class="content-section" id="overview">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>本次升级的核心判断</h2>
+          <p>现有项目已经验证散热求解技术链路。下一步重点不是继续堆叠单页功能，而是补齐正式建单、人机确认、企业协同和审计能力。</p>
+        </div>
+
+        <div class="summary-grid reveal">
+          <article class="summary-main">
+            <h3>Agent 提供专业建议，工程师保留最终决定权</h3>
+            <p>确定性规则负责判断是否达标。Agent 根据指标、知识库和历史效果生成候选方案。涉及模型调整的动作进入待确认节点，人工选择后才启动下一轮求解。</p>
+            <div class="summary-rule"></div>
+          </article>
+          <aside class="summary-side">
+            <div>
+              <strong>4</strong>
+              <p>四项产品化主线共同组成完整闭环，不能只处理页面视觉或单一机器人通知。</p>
+            </div>
+            <small>Web 重构 / 正式建单 / 人机协同 / 钉钉接入</small>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="web">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>重新组织 Web 产品架构</h2>
+          <p>将上传、任务队列、结果、迭代和报告从单一页面拆开，让用户能够快速理解当前任务、下一步操作和需要处理的待办。</p>
+        </div>
+
+        <div class="architecture">
+          <aside class="side-menu reveal" aria-label="建议产品导航">
+            <h3>建议产品导航</h3>
+            <div class="menu-item"><span class="menu-key">W</span>工作台</div>
+            <div class="menu-item"><span class="menu-key">T</span>任务中心</div>
+            <div class="menu-item"><span class="menu-key">A</span>待办中心</div>
+            <div class="menu-item"><span class="menu-key">K</span>知识与方案</div>
+            <div class="menu-item"><span class="menu-key">R</span>报告中心</div>
+            <div class="menu-item"><span class="menu-key">S</span>集成与设置</div>
+          </aside>
+
+          <div class="page-grid reveal">
+            <article class="page-card">
+              <h3>工作台</h3>
+              <p>呈现任务概况、我的待办、异常提醒、近期结果和主要操作入口。</p>
+              <ul><li>运行状态概览</li><li>待确认事项</li><li>快速新建任务</li></ul>
+            </article>
+            <article class="page-card">
+              <h3>任务中心</h3>
+              <p>按执行状态、热判定、审批状态、客户和负责人筛选任务。</p>
+              <ul><li>任务列表与搜索</li><li>模型版本管理</li><li>执行过程追踪</li></ul>
+            </article>
+            <article class="page-card">
+              <h3>任务详情</h3>
+              <p>使用分区页面承载输入要求、求解轮次、Agent 方案、决策记录和报告。</p>
+              <ul><li>轮次指标对比</li><li>候选方案证据</li><li>报告与产物下载</li></ul>
+            </article>
+            <article class="page-card">
+              <h3>待办中心</h3>
+              <p>集中展示等待人工确认的调优方案，支持对比、选择、驳回和填写意见。</p>
+              <ul><li>待我确认</li><li>已处理记录</li><li>审批冲突提示</li></ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="task-form">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>建立独立的任务建单流程</h2>
+          <p>建模文件只是任务输入的一部分。业务信息、验收指标、调优边界和文件校验需要形成正式、可版本化的任务快照。</p>
+        </div>
+
+        <div class="wizard reveal">
+          <article class="wizard-step" data-key="01">
+            <h3>基本信息</h3>
+            <p>填写客户、项目、产品型号、工况名称、负责人、运行环境和外部工单号，支持保存草稿。</p>
+          </article>
+          <article class="wizard-step" data-key="02">
+            <h3>验收要求</h3>
+            <p>定义最高温度、关键监测点、风量、压降、收敛标准和允许回退范围。所有数值明确单位和来源。</p>
+          </article>
+          <article class="wizard-step" data-key="03">
+            <h3>调优边界</h3>
+            <p>限定风扇、材料、TIM、散热片、风道和功耗等动作的可用范围，并定义哪些动作必须人工确认。</p>
+          </article>
+          <article class="wizard-step" data-key="04">
+            <h3>建模文件</h3>
+            <p>独立完成大文件上传、哈希校验、模型结构预检和版本管理。原始文件始终保留，调整只作用于工作副本。</p>
+          </article>
+          <article class="wizard-step" data-key="05">
+            <h3>确认提交</h3>
+            <p>汇总表单、模型文件、验收规则和调优边界。确认后冻结需求快照并进入求解队列。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="workflow">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>将全自动调优改为人机协同</h2>
+          <p>未达标时不再直接执行 Agent 生成的动作。系统先形成候选方案和待确认节点，工程师确认后再继续下一轮模型任务。</p>
+        </div>
+
+        <div class="flow-board reveal" aria-label="Agent 人机协同业务流程">
+          <div class="flow-row">
+            <div class="flow-node"><strong>提交任务</strong><span>冻结表单与模型快照</span></div>
+            <div class="flow-node"><strong>基线求解</strong><span>调用真实 Icepak 或 Mock 环境</span></div>
+            <div class="flow-node"><strong>确定性判断</strong><span>按验收规则输出 PASS、FAIL 或异常</span></div>
+            <div class="flow-node accent"><strong>Agent 生成方案</strong><span>结合知识库和历史效果形成 2 至 4 个候选方案</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-node warning wide"><strong>人工确认节点</strong><span>Web 与钉钉同步待办。工程师对比证据、风险和预期影响，选择单一方案或全部驳回。</span></div>
+            <div class="flow-node accent"><strong>应用选中方案</strong><span>只修改工作副本，生成新模型版本</span></div>
+            <div class="flow-node"><strong>下一轮求解</strong><span>重新判断并保留完整迭代记录</span></div>
+          </div>
+          <div class="flow-legend">
+            <span class="legend-item"><span class="legend-swatch"></span>系统执行</span>
+            <span class="legend-item"><span class="legend-swatch agent"></span>Agent 能力</span>
+            <span class="legend-item"><span class="legend-swatch human"></span>人工决策</span>
+          </div>
+        </div>
+
+        <div class="boundary-grid reveal">
+          <article class="boundary allowed">
+            <h3>Agent 可以做什么</h3>
+            <ul class="boundary-list">
+              <li>分析不达标指标和可能原因</li>
+              <li>引用内置知识与历史调优效果</li>
+              <li>生成结构化候选方案并排序</li>
+              <li>说明动作、风险、证据和预期影响</li>
+            </ul>
+          </article>
+          <article class="boundary denied">
+            <h3>Agent 不能直接做什么</h3>
+            <ul class="boundary-list">
+              <li>未经确认直接修改工程模型</li>
+              <li>自行降低或放宽验收指标</li>
+              <li>绕过动作范围、预算和安全策略</li>
+              <li>将 LLM 置信度作为工程安全结论</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="dingtalk">
+      <div class="shell gateway-layout">
+        <div class="gateway-stack reveal" aria-label="钉钉 Agent Gateway 架构">
+          <article class="gateway-layer">
+            <h3>钉钉 Bot 与互动卡片</h3>
+            <p>消息通知、任务查询、方案确认、Web 详情入口</p>
+          </article>
+          <article class="gateway-layer">
+            <h3>通用 Agent Gateway</h3>
+            <p>身份映射、会话绑定、意图路由、权限和幂等处理</p>
+          </article>
+          <article class="gateway-layer">
+            <h3>任务与审批服务</h3>
+            <p>统一任务事实源、审批决策、Temporal 信号和审计记录</p>
+          </article>
+        </div>
+
+        <div class="gateway-copy reveal">
+          <h2>钉钉作为企业协同入口</h2>
+          <p>钉钉逻辑不直接写入散热 Workflow。通过独立 Gateway 连接业务服务，确保 Web 与钉钉使用同一套身份、权限、任务和审批状态。</p>
+          <div class="gateway-capabilities">
+            <div class="capability">未达标通知</div>
+            <div class="capability">互动卡片确认</div>
+            <div class="capability">会话任务绑定</div>
+            <div class="capability">任务状态查询</div>
+            <div class="capability">结果与报告推送</div>
+            <div class="capability">完整操作审计</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="delivery">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>后续功能实施计划</h2>
+          <p>实施顺序以业务依赖为依据，先建立任务和状态基础，再完成人工确认闭环，最后接入企业协同与产品化保障。</p>
+        </div>
+
+        <div class="implementation-grid reveal">
+          <article class="feature-panel">
+            <h3>任务产品基础</h3>
+            <ul class="feature-list">
+              <li>工作台、任务列表和应用导航</li>
+              <li>独立任务建单与草稿保存</li>
+              <li>建模文件上传、校验和版本管理</li>
+              <li>任务详情、轮次对比和报告中心</li>
+              <li>执行状态、热判定和审批状态分离</li>
+              <li>角色权限和租户数据边界</li>
+            </ul>
+          </article>
+          <article class="feature-panel">
+            <h3>Agent 方案能力</h3>
+            <ul class="feature-list">
+              <li>结构化诊断和候选方案合同</li>
+              <li>知识引用、证据和风险说明</li>
+              <li>AUTO、CONFIRM、ADVISE_ONLY 策略校验</li>
+              <li>历史效果回流和方案质量评估</li>
+            </ul>
+          </article>
+          <article class="feature-panel">
+            <h3>人工确认闭环</h3>
+            <ul class="feature-list">
+              <li>待办中心和方案对比界面</li>
+              <li>选择、驳回、意见和超时处理</li>
+              <li>Temporal 持久等待与信号恢复</li>
+              <li>审批幂等、模型版本和决策审计</li>
+            </ul>
+          </article>
+          <article class="feature-panel">
+            <h3>钉钉 Agent Gateway</h3>
+            <ul class="feature-list">
+              <li>钉钉身份与平台用户映射</li>
+              <li>群聊、单聊与任务显式绑定</li>
+              <li>待办卡片、方案确认和状态同步</li>
+              <li>通知重试、签名校验、防重放和限流</li>
+            </ul>
+          </article>
+          <article class="feature-panel">
+            <h3>产品化保障</h3>
+            <ul class="feature-list">
+              <li>通知 Outbox 与失败告警</li>
+              <li>业务操作和 Agent 行为审计</li>
+              <li>异常恢复、重复操作和权限测试</li>
+              <li>部署、监控、备份与回退机制</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="confirm">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <h2>需要客户共同确认的事项</h2>
+          <p>以下内容会直接决定页面表单、Agent 行为边界、审批流程和钉钉接入方式，建议在产品原型确认前形成明确结论。</p>
+        </div>
+
+        <div class="confirmations reveal">
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">01</span>任务与验收标准</h3>
+            <p>确认必填字段、单位、默认值、关键监测点、温度上限、风量、压降和正式收敛定义。</p>
+          </article>
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">02</span>Agent 动作权限</h3>
+            <p>明确哪些动作允许自动执行，哪些必须人工确认，哪些只能展示为工程建议，以及对应参数范围。</p>
+          </article>
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">03</span>人工决策规则</h3>
+            <p>确认候选方案数量、审批人范围、单选或会签、全部驳回后的处理方式和审批超时规则。</p>
+          </article>
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">04</span>异常处理方式</h3>
+            <p>确认 INVALID、DIVERGED 和求解失败是否允许有限自动修复，还是直接生成工程异常待办。</p>
+          </article>
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">05</span>钉钉应用形态</h3>
+            <p>确认内部企业应用或第三方应用、单聊和群聊范围、测试组织、机器人权限及互动卡片权限。</p>
+          </article>
+          <article class="confirmation-panel">
+            <h3><span class="confirmation-number">06</span>数据与审计要求</h3>
+            <p>确认文件和报告保留期、敏感数据展示范围，以及报告是否记录全部候选方案和人工决策原因。</p>
+          </article>
+        </div>
+
+        <div class="closing reveal">
+          <h2>最终形成可解释、可确认、可追溯的散热优化协作平台</h2>
+          <p>保留现有 Icepak、Mock、Temporal、MinIO、PostgreSQL 和报告链路，重点补齐正式产品界面、人工决策节点、企业通知和治理能力。</p>
+          <a class="button secondary" href="#top">返回方案首页</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>格曼兹散热仿真平台产品化升级方案</span>
+      <span>用于客户功能讨论与需求确认</span>
+    </div>
+  </footer>
+
+  <script>
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealItems = document.querySelectorAll('.reveal');
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      revealItems.forEach((item) => item.classList.add('visible'));
+    } else {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    }
+
+    const sectionLinks = Array.from(document.querySelectorAll('.nav a'));
+    const sections = sectionLinks
+      .map((link) => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+
+    if ('IntersectionObserver' in window) {
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          sectionLinks.forEach((link) => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+          });
+        });
+      }, { rootMargin: '-28% 0px -62% 0px' });
+      sections.forEach((section) => sectionObserver.observe(section));
+    }
+  </script>
+</body>
+</html>
