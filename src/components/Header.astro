@@ -13,6 +13,17 @@ const publicAsset = (path: string) => `${base.replace(/\/$/, '')}/${path}`;
 
 const menuGroups = [
   {
+    label: '产品',
+    kicker: '三类核心交付',
+    title: '让 Agent 成为可运行的业务能力',
+    summary: '从团队转型、场景落地，到围绕业务专家定制完整 Agent 生态。',
+    items: [
+      { href: '#team-transformation', title: '研发团队转型与陪跑培训', en: '研发组织', desc: '以 Agent 特区重建团队交付方式', mark: '研' },
+      { href: '#agent-delivery', title: 'Agent 落地', en: '企业场景', desc: 'FDE 驻场打通真实业务工作流', mark: '落' },
+      { href: '#expert-ecosystem', title: '业务专家 Agent 生态', en: '专家生态', desc: '放大专家判断力和组织覆盖范围', mark: '专' },
+    ],
+  },
+  {
     label: '方案',
     kicker: 'Agent 特区 · 方法论',
     title: '把 AI 战略变成可控的运营单元',
@@ -83,6 +94,10 @@ const plainLinks = [
                         {g.label === '方案' ? (
                           <span class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink text-white">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={schemeIcons[iconKey(it.title)]} />
+                          </span>
+                        ) : g.label === '产品' ? (
+                          <span class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink text-[13px] font-semibold text-white">
+                            {it.mark}
                           </span>
                         ) : (
                           <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />

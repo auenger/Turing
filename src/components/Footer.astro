@@ -3,6 +3,14 @@ const year = new Date().getFullYear();
 
 const groups = [
   {
+    title: '产品',
+    links: [
+      { href: '#team-transformation', label: '研发团队转型与陪跑培训' },
+      { href: '#agent-delivery', label: 'Agent 落地' },
+      { href: '#expert-ecosystem', label: '业务专家 Agent 生态' },
+    ],
+  },
+  {
     title: '方案',
     links: [
       { href: '#concept', label: 'Agent 特区' },
@@ -35,7 +43,7 @@ const groups = [
 
 <footer class="border-t border-line-soft bg-canvas">
   <div class="container-wide py-14 md:py-20">
-    <div class="grid gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
       <div>
         <div class="flex items-baseline gap-1.5">
         <span class="text-xl font-semibold tracking-tight text-ink">硅基源流</span>

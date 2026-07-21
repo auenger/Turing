@@ -4,6 +4,34 @@ import maChiPortrait from '../assets/team/ma-chi.jpg';
 import liXuetaoPortrait from '../assets/team/li-xuetao.jpg';
 import yangZhengwuPortrait from '../assets/team/yang-zhengwu-web.jpg';
 
+/* ---------- 主要产品 ---------- */
+const products = [
+  {
+    slug: 'team-transformation',
+    label: '研发组织',
+    title: '研发团队转型与陪跑培训',
+    desc: '以 Agent 特区为转型单元，陪团队在真实项目中重建角色、工作流、验证机制与度量体系。',
+    outcome: '从会用 AI，走到团队能够持续交付',
+    items: ['研发流程诊断与试点选择', '跨职能小队与责任边界设计', 'Harness 工作流与验证资产沉淀'],
+  },
+  {
+    slug: 'agent-delivery',
+    label: '企业场景',
+    title: 'Agent 落地交付',
+    desc: 'FDE 进入业务现场，把工程软件、企业数据、规则和人工审核接成可以运行的 Agent 工作流。',
+    outcome: '从场景判断，到上线运行与团队交接',
+    items: ['业务流程与系统连接梳理', 'Agent 角色、工具、权限和护栏', '真实任务验证、上线与持续迭代'],
+  },
+  {
+    slug: 'expert-ecosystem',
+    label: '专家生态',
+    title: '业务专家的 AI Agent 生态定制',
+    desc: '派驻 AI 专家围绕业务专家搭建整套 Agent 生态。业务专家继续做关键判断，不必分心研究模型、提示词和 Agent 工具。',
+    outcome: '放大专家的决策带宽，把个人经验变成组织能力',
+    items: ['通讯入口与问题信息补齐', '知识、案例与业务规则工程化', '执行、质检、升级和学习闭环', '模型、算力、安全接入与工作流环境'],
+  },
+];
+
 /* ---------- Agent 特区 · 七要素 ---------- */
 const elements = [
   {
@@ -289,6 +317,49 @@ const team = [
       <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
         <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">5</div>
         <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">真实行业案例</div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ 主要产品 ============================ */}
+  <section id="products" class="scroll-mt-20 py-[96px] md:py-[140px]">
+    <div class="container-wide">
+      <div class="max-w-[780px]">
+        <p class="eyebrow" data-reveal>主要产品</p>
+        <h2 class="display mt-5 text-[34px] md:text-[54px]" data-reveal data-reveal-delay="1">
+          从团队转型，到一套真正可用的 Agent 生态。
+        </h2>
+        <p class="mt-6 max-w-[680px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
+          我们不只提供工具或基础设施，而是进入真实工作现场，把组织、流程、系统和 Agent 一起交付。
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-3 md:items-stretch">
+        {products.map((product, i) => (
+          <article
+            id={product.slug}
+            class="flex scroll-mt-24 flex-col rounded-[24px] border border-line-soft bg-paper p-8 md:p-7 lg:p-9"
+            data-reveal
+            data-reveal-delay={String(i + 1)}
+          >
+            <p class="text-[14px] font-semibold text-accent">{product.label}</p>
+            <h3 class="mt-3 text-[24px] font-semibold leading-tight tracking-tight text-ink lg:text-[27px]">
+              {product.title}
+            </h3>
+            <p class="mt-4 text-[15px] leading-relaxed text-sub lg:text-[16px]">{product.desc}</p>
+            <p class="mt-6 border-t border-line-soft pt-5 text-[15px] font-medium leading-relaxed text-ink">
+              {product.outcome}
+            </p>
+            <ul class="mt-5 grid gap-2.5 text-[14px] leading-relaxed text-sub">
+              {product.items.map((item) => (
+                <li class="flex items-start gap-3">
+                  <span class="mt-[8px] h-px w-4 shrink-0 bg-accent"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
       </div>
     </div>
   </section>
