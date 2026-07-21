@@ -1,4 +1,4 @@
-# 硅基源流 SiliconSource 官网
+# 硅基源流 SiliRoot 官网
 
 硅基源流人工智能官方网站，使用 Astro 及 Tailwind CSS 构建。
 
@@ -27,6 +27,6 @@ pnpm build
 
 推送到 `main` 分支后，GitHub Actions 会自动构建并通过 GitHub Pages 部署到：
 
-<https://siliconsource.cn>
+<https://siliroot.com>
 
 自定义域名通过 `CNAME` 文件配置。
