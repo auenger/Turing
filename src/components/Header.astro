@@ -14,13 +14,14 @@ const publicAsset = (path: string) => `${base.replace(/\/$/, '')}/${path}`;
 const menuGroups = [
   {
     label: '产品',
-    kicker: '三类核心交付',
+    kicker: '四类核心产品',
     title: '让 Agent 成为可运行的业务能力',
-    summary: '从团队转型、场景落地，到围绕业务专家定制完整 Agent 生态。',
+    summary: '从团队转型、场景落地与专家生态，到统一人和 Agent 的组织操作系统。',
     items: [
       { href: '#team-transformation', title: '研发团队转型与陪跑培训', en: '研发组织', desc: '以 Agent 特区重建团队交付方式', mark: '研' },
       { href: '#agent-delivery', title: 'Agent 落地', en: '企业场景', desc: 'FDE 驻场打通真实业务工作流', mark: '落' },
       { href: '#expert-ecosystem', title: '业务专家 Agent 生态', en: '专家生态', desc: '放大专家判断力和组织覆盖范围', mark: '专' },
+      { href: 'https://silicoeco.com/', title: 'SilicoEco Agent Work OS', en: '组织系统', desc: '统一任务、知识、协作与治理', mark: 'OS', external: true },
     ],
   },
   {
@@ -90,7 +91,7 @@ const plainLinks = [
                   </div>
                   <div class="grid grid-cols-1 gap-0.5 p-1">
                     {g.items.map((it) => (
-                      <a href={it.href} class="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-canvas">
+                      <a href={it.href} target={it.external ? '_blank' : undefined} rel={it.external ? 'noreferrer' : undefined} class="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-canvas">
                         {g.label === '方案' ? (
                           <span class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink text-white">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={schemeIcons[iconKey(it.title)]} />
@@ -149,7 +150,7 @@ const plainLinks = [
           <div class="py-2">
             <p class="px-1 pb-1 text-[12px] font-semibold uppercase tracking-wider text-faint">{g.label}</p>
             {g.items.map((it) => (
-              <a href={it.href} class="flex items-baseline justify-between rounded-lg px-2 py-2.5 text-[15px] text-ink hover:bg-canvas">
+              <a href={it.href} target={it.external ? '_blank' : undefined} rel={it.external ? 'noreferrer' : undefined} class="flex items-baseline justify-between rounded-lg px-2 py-2.5 text-[15px] text-ink hover:bg-canvas">
                 <span>{it.title}</span>
                 <span class="text-[12px] text-faint">{it.en}</span>
               </a>

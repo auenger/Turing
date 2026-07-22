@@ -5,7 +5,17 @@ import liXuetaoPortrait from '../assets/team/li-xuetao.jpg';
 import yangZhengwuPortrait from '../assets/team/yang-zhengwu-web.jpg';
 
 /* ---------- 主要产品 ---------- */
-const products = [
+type Product = {
+  slug: string;
+  label: string;
+  title: string;
+  desc: string;
+  outcome: string;
+  items: string[];
+  href?: string;
+};
+
+const products: Product[] = [
   {
     slug: 'team-transformation',
     label: '研发组织',
@@ -29,6 +39,15 @@ const products = [
     desc: '派驻 AI 专家围绕业务专家搭建整套 Agent 生态。业务专家继续做关键判断，不必分心研究模型、提示词和 Agent 工具。',
     outcome: '放大专家的决策带宽，把个人经验变成组织能力',
     items: ['通讯入口与问题信息补齐', '知识、案例与业务规则工程化', '执行、质检、升级和学习闭环', '模型、算力、安全接入与工作流环境'],
+  },
+  {
+    slug: 'silicoeco',
+    label: '组织操作系统',
+    title: 'SilicoEco Agent Work OS',
+    desc: '用统一任务、上下文和治理连接人类员工、AI 员工、知识、应用与工作流，让分散的 Agent 产品成为组织成员。',
+    outcome: '从分散的 Agent 工具，走到可治理的协作生态',
+    items: ['统一 Task 与业务 SOP', 'Agent 身份、职责、权限和审计', '桌面、Web、终端、浏览器与 IM 协同', '组织知识持续沉淀与复用'],
+    href: 'https://silicoeco.com/',
   },
 ];
 
@@ -327,14 +346,14 @@ const team = [
       <div class="max-w-[780px]">
         <p class="eyebrow" data-reveal>主要产品</p>
         <h2 class="display mt-5 text-[34px] md:text-[54px]" data-reveal data-reveal-delay="1">
-          从团队转型，到一套真正可用的 Agent 生态。
+          从真实业务，到组织级 Agent 能力。
         </h2>
         <p class="mt-6 max-w-[680px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
-          我们不只提供工具或基础设施，而是进入真实工作现场，把组织、流程、系统和 Agent 一起交付。
+          从团队陪跑、场景落地和专家生态，到统一人和 Agent 的组织操作系统。
         </p>
       </div>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-3 md:items-stretch">
+      <div class="mt-16 grid gap-6 md:grid-cols-2 md:items-stretch xl:grid-cols-4">
         {products.map((product, i) => (
           <article
             id={product.slug}
@@ -358,6 +377,17 @@ const team = [
                 </li>
               ))}
             </ul>
+            {product.href && (
+              <a
+                href={product.href}
+                target="_blank"
+                rel="noreferrer"
+                class="mt-auto inline-flex items-center gap-2 pt-7 text-[14px] font-semibold text-accent transition-colors hover:text-accent-hover"
+              >
+                访问产品官网
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </article>
         ))}
       </div>
