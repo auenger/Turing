@@ -132,9 +132,8 @@ const plainLinks = [
     <!-- 右侧 CTA + 汉堡 -->
     <div class="ml-auto flex items-center gap-2">
       <a href="#engagement" class="btn-pill btn-pill-primary hidden !px-4 !py-2 !text-[13px] sm:inline-flex">预约工作会议</a>
-      <button id="theme-toggle" class="grid h-9 w-9 place-items-center rounded-[10px] text-[20px] leading-none text-sub transition-colors hover:bg-paper hover:text-ink" type="button" aria-label="切换为暗色主题">
-        <span class="theme-label-light font-sans" aria-hidden="true">&#x263E;&#xFE0E;</span>
-        <span class="theme-label-dark font-sans" aria-hidden="true">&#x263C;&#xFE0E;</span>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换到暗色主题">
+        <span class="theme-glyph" aria-hidden="true"></span>
       </button>
       <button id="mobile-toggle" class="grid h-9 w-9 place-items-center rounded-[10px] text-ink transition hover:bg-paper lg:hidden" aria-label="打开菜单" aria-expanded="false">
         <svg class="icon-open h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" /></svg>
@@ -175,6 +174,35 @@ const plainLinks = [
 
 <style>
   :global(html[data-theme="dark"]) .brand-logo { filter: invert(1); }
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: none;
+    padding: 0;
+    border: 1px solid var(--color-line-soft);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-paper) 74%, transparent);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: border-color 180ms ease, background-color 180ms ease;
+  }
+  .theme-toggle:hover { border-color: var(--color-line); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .theme-glyph {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    box-shadow: inset -4px -3px 0 var(--color-ink);
+    transition: transform 280ms ease, box-shadow 280ms ease;
+  }
+  :global(html[data-theme="dark"]) .theme-glyph {
+    box-shadow: none;
+    transform: rotate(90deg) scale(0.8);
+  }
   #site-header {
     background: rgba(251, 251, 253, 0.72);
     backdrop-filter: saturate(180%) blur(20px);
@@ -205,7 +233,7 @@ const plainLinks = [
   const themeToggle = document.getElementById('theme-toggle');
   const syncThemeToggle = () => {
     const dark = document.documentElement.dataset.theme === 'dark';
-    themeToggle?.setAttribute('aria-label', dark ? '切换为亮色主题' : '切换为暗色主题');
+    themeToggle?.setAttribute('aria-label', dark ? '切换到亮色主题' : '切换到暗色主题');
   };
   syncThemeToggle();
   themeToggle?.addEventListener('click', () => {

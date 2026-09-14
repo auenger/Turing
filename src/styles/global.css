@@ -197,15 +197,3 @@
 :root[data-theme="dark"] body {
   background-image: radial-gradient(circle at 92% 4%, rgb(212 20 60 / 0.1), transparent 28rem);
 }
-
-.theme-label-dark {
-  display: none;
-}
-
-:root[data-theme="dark"] .theme-label-light {
-  display: none;
-}
-
-:root[data-theme="dark"] .theme-label-dark {
-  display: inline;
-}
