@@ -28,10 +28,6 @@
     "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "Source Han Sans SC", "Noto Sans SC", sans-serif;
 
-  /* 品牌 logo 字「硅基源流」使用系统宋体 */
-  --font-brand: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong",
-    "SimSun", serif;
-
   /* 圆角 */
   --radius-card: 22px;
   --radius-card-lg: 28px;

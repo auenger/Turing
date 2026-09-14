@@ -148,7 +148,19 @@ const capabilities = [
 ];
 
 /* ---------- 案例 ---------- */
-const cases = [
+interface Case {
+  id: string;
+  no: string;
+  name: string;
+  tag: string;
+  headline: string;
+  context: string;
+  metric?: { big: string; sub: string };
+  points: string[];
+  insight: string;
+  dark?: boolean;
+}
+const cases: Case[] = [
   {
     id: 'case-kreditz',
     no: '案例 01',
@@ -204,40 +216,89 @@ const cases = [
     dark: true,
   },
   {
-    id: 'case-public',
+    id: 'case-training',
     no: '案例 04',
-    name: '公共安全研判 Agent 特区',
-    tag: '运营类 Agent · 嵌入工作入口',
-    headline: '嵌入原有工作入口，输出可审查的证据链。',
+    name: '制造业研发团队 AI 转型',
+    tag: '团队陪跑 · 真实研发任务',
+    headline: '把 AI 方法放进团队正在做的项目。',
     context:
-      '一线用户在原工作入口提交问题，研判 Agent 关联案件数据、地图与规则，形成结构化建议，再由人工确认。',
-    metric: { big: '3 类', sub: '小案快破、动态巡防、群组助手' },
+      '面向制造业软件研发团队，围绕真实业务线配置 Agent 工作环境，训练需求梳理、编码、测试和知识沉淀的协作方式。',
     points: [
-      '消息入口 → 研判 Agent → 卡片 + 地图 → 人工确认',
-      '结果回写上下文，形成反馈闭环',
-      '按案件、角色、数据范围做权限隔离',
-      '验证矩阵：历史回放 → 决策 trace → 影子模式 → 上线',
+      '产品经理用 AI 梳理需求、功能边界和验收材料',
+      '研发团队把规范与业务经验整理为 Agent 上下文',
+      '将常见任务沉淀为可复用的 Skill 和工作流',
+      '结合现场指导、远程陪跑与阶段性能力评估',
     ],
     insight:
-      '运营类 Agent 要进入原有工作入口，输出可审查证据链，并保留人工确认和权限边界。',
+      '团队建立了 AI 研发工作流基础；自动化测试和能力资产治理仍需持续完善。',
   },
   {
-    id: 'case-semi',
+    id: 'case-equipment',
     no: '案例 05',
-    name: '半导体研发 Agent 特区',
-    tag: '研发流程 · 可复制产线',
-    headline: '从研发任务，到可复制产线。',
+    name: '制造业设备对接流程改造',
+    tag: 'FDE 交付 · 设备测试',
+    headline: '先解除联调等待，再让 Agent 接手重复判断。',
     context:
-      '先在真实研发任务里跑通完整链路，证明内部流程可以被验证和复用，再判断哪些能力值得产品化。',
-    metric: { big: '5 步', sub: '需求澄清 → 模块拆分 → 代码生成 → Playwright 验证 → 测试资产沉淀' },
+      '新设备接入企业系统时，工程师需要反复阅读协议文档、调试接口并等待真实服务环境。项目先梳理协议与测机流程，再引入自动化。',
     points: [
-      'Phase 1 已交付：真实任务跑通完整链路',
-      '抽取触发判断、流程骨架、关键约束、数据样本',
-      '应用方向：EAP 测机、LiteMES、内部提效',
-      '把一次性研发动作变成可复用 Agent 资产',
+      '整理多版本设备协议，形成统一的接口约定',
+      '搭建模拟服务，减少测试对真实环境的依赖',
+      '让设备侧测试与后台服务解耦，支持并行推进',
+      '沉淀排错经验，由 Agent 辅助编排、定位与报告生成',
     ],
     insight:
-      '研发 Agent 特区先证明内部流程可以被验证和复用，再判断哪些能力值得产品化。',
+      'FDE 的价值先来自流程重组与经验沉淀，再来自 Agent 对测试工作的辅助。',
+  },
+  {
+    id: 'case-public',
+    no: '案例 06',
+    name: '公共安全辅助研判',
+    tag: '业务 Agent · 人工确认',
+    headline: '让研判建议进入原有工作入口，并保留人工决定权。',
+    context:
+      '一线人员在现有工作入口提交问题，Agent 调用获授权的数据与地图工具整理线索，形成建议和报告，再交由人员确认。',
+    points: [
+      '对话与地图界面衔接日常工作流程',
+      '按用户身份和业务权限隔离数据访问',
+      '记录工具调用与处理过程，便于审计追踪',
+      '人工确认结果回写，形成处理闭环',
+    ],
+    insight:
+      '这类交付同时需要业务场景、权限、审计和部署规范，Agent 只提供辅助判断。',
+  },
+  {
+    id: 'case-product-team',
+    no: '案例 07',
+    name: '研发与产品团队协作转型',
+    tag: '组织转型 · 产品工程化',
+    headline: '让产品、研发和质量角色围绕同一条交付链协作。',
+    context:
+      '在另一家企业的软件团队中，培训覆盖研发与产品角色，并围绕既有项目梳理前端迁移、第三方接口对接和产品需求文档维护等场景。',
+    points: [
+      '把项目知识与规范整理为 Agent 可用的上下文',
+      '按业务功能拆分需求，明确产品、技术和质量责任',
+      '把前端迁移经验沉淀为可复用流程与工具',
+      '建立接口清单、前置校验和模拟测试方法',
+    ],
+    insight:
+      '培训与真实任务结合，团队才能逐步接管工具、流程和交付责任。',
+  },
+  {
+    id: 'case-agent-platform',
+    no: '案例 08',
+    name: '企业员工服务智能体平台',
+    tag: '平台建设 · 人机协作',
+    headline: '从单点问答，走向可配置、可治理的 Agent 平台。',
+    context:
+      '面向企业内部知识查询与员工服务场景，建设可管理 Agent、知识、工具和任务的通用平台，支持员工端与管理端协同。',
+    points: [
+      '统一配置 Agent、知识库和业务工具',
+      '支持会话上下文、任务触发与执行记录',
+      '以角色权限和租户隔离控制访问范围',
+      '写操作设置风险核验、人工确认和审计记录',
+    ],
+    insight:
+      '把业务经验整理为可更新的 SOP 与 Skill，再放进同一个人机协作环境中使用。',
   },
 ];
 
@@ -319,23 +380,6 @@ const team = [
           <a href="#engagement" class="btn-pill btn-pill-primary">预约工作会议</a>
           <a href="#concept" class="btn-pill btn-pill-ghost">了解 Agent 特区</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-y border-line-soft bg-paper" aria-label="项目成果概览">
-    <div class="container-wide grid grid-cols-3 divide-x divide-line-soft">
-      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
-        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">63 → 4.5</div>
-        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">Kreditz 交付团队</div>
-      </div>
-      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
-        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">2-5×</div>
-        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">研发产能放大</div>
-      </div>
-      <div class="flex min-w-0 flex-col items-center justify-center px-2 py-7 text-center md:px-8 md:py-9">
-        <div class="text-[24px] font-semibold tracking-tight text-ink sm:text-[28px] md:text-[38px]">5</div>
-        <div class="mt-1 text-[11px] leading-tight text-faint sm:text-xs md:text-sm">真实行业案例</div>
       </div>
     </div>
   </section>
@@ -545,10 +589,10 @@ const team = [
       <div class="mx-auto max-w-[760px] text-center">
         <p class="eyebrow" data-reveal>真实案例</p>
         <h2 class="display mt-5 text-[32px] md:text-[52px]" data-reveal data-reveal-delay="1">
-          已经在真实业务里跑通。
+          看见真实项目里的问题与做法。
         </h2>
         <p class="mx-auto mt-6 max-w-[620px] text-[18px] leading-relaxed text-sub md:text-[20px]" data-reveal data-reveal-delay="2">
-          覆盖金融科技研发、ToB 软件交付、热仿真、公共安全研判与半导体研发，共五个 Agent 特区。
+          从研发团队转型、设备对接与专业工程，到公共安全研判和企业员工服务，呈现真实项目中的问题、做法与经验。
         </p>
       </div>
 
@@ -564,7 +608,7 @@ const team = [
               data-reveal
             >
               <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-                <div class="max-w-[560px]">
+                <div class={c.metric ? 'max-w-[560px]' : 'max-w-[800px]'}>
                   <div class="flex items-center gap-3 text-[13px] font-semibold text-faint">
                     <span class={c.dark ? 'text-accent' : 'text-accent'}>{c.no}</span>
                     <span class="h-px w-6 bg-line" />
@@ -584,7 +628,7 @@ const team = [
                   </p>
                 </div>
 
-                <div class="shrink-0 lg:max-w-[300px] lg:text-right">
+                {c.metric && <div class="shrink-0 lg:max-w-[300px] lg:text-right">
                   <div class:list={[
                     'text-[44px] font-semibold leading-none tracking-tight md:text-[56px]',
                     c.dark ? 'text-white' : 'text-ink',
@@ -594,7 +638,7 @@ const team = [
                   <div class:list={['mt-3 text-[14px] leading-relaxed', c.dark ? 'text-white/60' : 'text-faint']}>
                     {c.metric.sub}
                   </div>
-                </div>
+                </div>}
               </div>
 
               <ul class="mt-10 grid gap-x-8 gap-y-3 border-t border-line-soft pt-7 sm:grid-cols-2">

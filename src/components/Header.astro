@@ -39,14 +39,17 @@ const menuGroups = [
   {
     label: '案例',
     kicker: '在真实业务里跑通',
-    title: '五个 Agent 特区',
-    summary: '覆盖金融科技、软件交付、工程仿真、公共安全与半导体研发。',
+    title: '八个真实交付场景',
+    summary: '覆盖团队转型、软件交付、工程仿真、设备对接与企业 Agent 平台。',
     items: [
       { href: '#case-kreditz', title: 'Kreditz', en: '金融科技', desc: '63 → 4.5 人，0 行手写代码' },
       { href: '#case-tianjin', title: '天津合众', en: '软件交付', desc: '组织重构，利润率近 30%' },
       { href: '#case-thermal', title: '热仿真', en: '工程仿真', desc: 'FloTHERM + Agent 控制回路' },
-      { href: '#case-public', title: '公共安全研判', en: '公共安全', desc: '嵌入工作入口的证据链' },
-      { href: '#case-semi', title: '半导体研发', en: '半导体', desc: '可验证、可复制的产线' },
+      { href: '#case-training', title: '制造业研发转型', en: '团队陪跑', desc: '把 AI 方法放进真实项目' },
+      { href: '#case-equipment', title: '设备对接流程', en: '设备测试', desc: '模拟服务与并行联调' },
+      { href: '#case-public', title: '公共安全研判', en: '公共安全', desc: '人工确认与可审计流程' },
+      { href: '#case-product-team', title: '研发与产品协作', en: '组织转型', desc: '需求、开发与质量协同' },
+      { href: '#case-agent-platform', title: '员工服务 Agent 平台', en: '平台建设', desc: '可配置、可治理的业务 Agent' },
     ],
   },
 ];
@@ -61,11 +64,9 @@ const plainLinks = [
 <header id="site-header" class="fixed inset-x-0 top-0 z-50">
   <div class="mx-auto flex h-14 max-w-[1200px] items-center gap-3 px-5 lg:gap-4 lg:px-6">
     <!-- Logo -->
-    <a href="#top" class="flex shrink-0 items-center gap-2.5">
-      <span class="flex h-8 w-12 items-center justify-center">
-        <img src={publicAsset('AHLogo-web.png')} alt="硅基源流 SiliRoot" class="h-auto w-full object-contain" width="48" height="30" />
-      </span>
-      <span class="font-brand text-[23px] font-bold leading-none tracking-[0.06em] text-ink">硅基源流</span>
+    <a href="#top" class="flex shrink-0 items-center gap-1.5" aria-label="硅基源流 SiliRoot，返回顶部">
+      <img src={publicAsset('siliroot-mark.svg')} alt="" class="brand-logo h-10 w-10 shrink-0" width="40" height="40" />
+      <img src={publicAsset('siliroot-wordmark.svg')} alt="" class="brand-logo h-10 w-[113px] shrink-0" width="113" height="40" />
     </a>
 
     <!-- 居中导航 -->
@@ -173,6 +174,7 @@ const plainLinks = [
 </header>
 
 <style>
+  :global(html[data-theme="dark"]) .brand-logo { filter: invert(1); }
   #site-header {
     background: rgba(251, 251, 253, 0.72);
     backdrop-filter: saturate(180%) blur(20px);

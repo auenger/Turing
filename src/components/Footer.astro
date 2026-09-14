@@ -1,4 +1,6 @@
 ---
+const base = import.meta.env.BASE_URL;
+const publicAsset = (path: string) => `${base.replace(/\/$/, '')}/${path}`;
 const year = new Date().getFullYear();
 
 const groups = [
@@ -26,8 +28,11 @@ const groups = [
       { href: '#case-kreditz', label: 'Kreditz' },
       { href: '#case-tianjin', label: '天津合众' },
       { href: '#case-thermal', label: '热仿真' },
+      { href: '#case-training', label: '制造业研发转型' },
+      { href: '#case-equipment', label: '设备对接流程' },
       { href: '#case-public', label: '公共安全研判' },
-      { href: '#case-semi', label: '半导体研发' },
+      { href: '#case-product-team', label: '研发与产品协作' },
+      { href: '#case-agent-platform', label: '员工服务 Agent 平台' },
     ],
   },
   {
@@ -46,12 +51,9 @@ const groups = [
   <div class="container-wide py-14 md:py-20">
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
       <div>
-        <div class="flex items-baseline gap-1.5">
-        <span class="text-xl font-semibold tracking-tight text-ink">硅基源流</span>
-        <span class="text-[12px] font-medium tracking-wide text-faint">SiliRoot</span>
-        </div>
+        <img src={publicAsset('siliroot.svg')} alt="硅基源流 SiliRoot" class="brand-logo h-[132px] w-[132px]" width="132" height="132" loading="lazy" />
         <p class="mt-4 max-w-xs text-sm leading-relaxed text-sub">
-        上海硅基源流人工智能科技有限公司。以 Agent 特区承接 AI 战略，把试点放进有边界的真实工作。
+        苏州硅基源流人工智能。以 Agent 特区承接 AI 战略，把试点放进有边界的真实工作。
         </p>
       </div>
 
@@ -78,10 +80,14 @@ const groups = [
     <div
       class="mt-12 flex flex-col gap-3 border-t border-line-soft pt-6 text-xs text-faint md:flex-row md:items-center md:justify-between"
     >
-      <p>© {year} 上海硅基源流人工智能科技有限公司</p>
+      <p>© {year} 苏州硅基源流人工智能</p>
       <p class="md:text-right">
-        上海市浦东新区
+        苏州
       </p>
     </div>
   </div>
 </footer>
+
+<style>
+  :global(html[data-theme="dark"]) .brand-logo { filter: invert(1); }
+</style>
