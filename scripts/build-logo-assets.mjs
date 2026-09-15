@@ -1,0 +1,22 @@
+import {writeFile} from 'node:fs/promises';
+import {createRequire} from 'node:module';
+import {W,H,parts,pathFor} from '../src/lib/logo-geometry.js';
+
+const require=createRequire(import.meta.url);
+const sharp=createRequire(require.resolve('astro/package.json'))('sharp');
+const paths=parts.map(part=>`<path d="${pathFor(part)}"/>`).join('');
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="#202020">${paths}</svg>`;
+const favicon=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 ${W+48} ${H+48}"><style>svg{fill:#202020}@media(prefers-color-scheme:dark){svg{fill:#f4f4f4}}</style>${paths}</svg>`;
+await writeFile('public/logo-mark.svg',svg);
+await writeFile('public/logo-favicon.svg',favicon);
+const touchMark=await sharp(Buffer.from(svg)).resize(140,136,{fit:'contain'}).png().toBuffer();
+await sharp({create:{width:180,height:180,channels:4,background:'#fff'}}).composite([{input:touchMark,left:20,top:22}]).png().toFile('public/logo-touch.png');
+const socialMark=await sharp(Buffer.from(svg)).resize({width:600}).png().toBuffer();
+const wordmark=await sharp('public/siliroot-wordmark.svg').resize({width:660}).png().toBuffer();
+await sharp({create:{width:1254,height:1254,channels:3,background:'#fff'}}).composite([{input:socialMark,left:327,top:180},{input:wordmark,left:297,top:820}]).png().toFile('public/logo-social.png');
+const icon=await sharp(Buffer.from(svg)).resize(32,32,{fit:'contain',background:{r:255,g:255,b:255,alpha:0}}).png().toBuffer();
+const header=Buffer.alloc(22);
+header.writeUInt16LE(1,2);header.writeUInt16LE(1,4);header[6]=32;header[7]=32;
+header.writeUInt16LE(1,10);header.writeUInt16LE(32,12);header.writeUInt32LE(icon.length,14);header.writeUInt32LE(22,18);
+await writeFile('public/logo-favicon.ico',Buffer.concat([header,icon]));
+console.log('Built geometric logo, favicons, touch icon and sharing image');

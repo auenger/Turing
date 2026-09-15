@@ -9,18 +9,30 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "pnpm run build:logo && astro build",
+    "build:logo": "node scripts/build-logo-assets.mjs && pnpm run build:logo-animation",
+    "build:logo-animation": "node scripts/build-logo-animation.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@remotion/player": "^4.0.524",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.9",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.524",
     "tailwindcss": "^4.3.2"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
   }
 }

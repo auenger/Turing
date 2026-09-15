@@ -1,0 +1,12 @@
+---
+import {W, H, parts, pathFor} from '../lib/logo-geometry.js';
+interface Props { class?: string; label?: string; }
+const {class: className, label} = Astro.props;
+---
+<!-- Each A command is an exact circular arc derived from the shared construction. -->
+<svg class:list={['geometric-logo', className]} viewBox={`0 0 ${W} ${H}`} fill="currentColor" role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'} focusable="false" data-geometric-logo>
+  {parts.map(part => <path d={pathFor(part)} />)}
+</svg>
+<style>
+  .geometric-logo { display:block; flex-shrink:0; color:var(--color-ink, #202020); }
+</style>

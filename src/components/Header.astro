@@ -1,4 +1,5 @@
 ---
+import LogoMark from './LogoMark.astro';
 /* 顶部导航：logo 左、导航居中、CTA 右、hover mega menu、移动端汉堡 */
 
 const schemeIcons: Record<string, string> = {
@@ -65,7 +66,7 @@ const plainLinks = [
   <div class="mx-auto flex h-14 max-w-[1200px] items-center gap-3 px-5 lg:gap-4 lg:px-6">
     <!-- Logo -->
     <a href="#top" class="flex shrink-0 items-center gap-1.5" aria-label="硅基源流 SiliRoot，返回顶部">
-      <img src={publicAsset('siliroot-mark.svg')} alt="" class="brand-logo h-10 w-10 shrink-0" width="40" height="40" />
+      <LogoMark class="h-10 w-10 shrink-0" />
       <img src={publicAsset('siliroot-wordmark.svg')} alt="" class="brand-logo h-10 w-[113px] shrink-0" width="113" height="40" />
     </a>
 

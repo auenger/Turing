@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>硅基源流 · Logo 设计</title>
+<style>
+  :root { color-scheme:light; --paper:#fff; --ink:#202020; --muted:#72777b; --line:#dce0e2; --add:#168570; --cut:#ce5939; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); background:#f4f5f6; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; }
+  main { max-width:1420px; margin:auto; padding:36px 28px 56px; }
+  header { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:24px; }
+  h1 { font-size:28px; font-weight:600; letter-spacing:-.035em; margin:0 0 10px; }
+  p { margin:0; color:var(--muted); font-size:13px; line-height:1.7; }
+  button, select { font:inherit; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:9px 12px; cursor:pointer; }
+  button:hover { border-color:#92989c; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline:2px solid var(--add); outline-offset:3px; }
+  button[aria-pressed=true] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .toolbar, .steps { display:flex; flex-wrap:wrap; gap:8px; }
+  .steps { margin-bottom:16px; }
+  .compare-controls { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:18px; }
+  .compare-modes { display:flex; gap:8px; flex-wrap:wrap; }
+  .opacity-control { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--muted); }
+  .opacity-control label { margin:0; white-space:nowrap; }
+  .opacity-control input[type=range] { width:140px; flex:none; }
+  .opacity-control output { min-width:34px; }
+  input:disabled { opacity:.35; }
+  .comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  .panel { border:1px solid var(--line); border-radius:10px; background:var(--paper); overflow:hidden; }
+  .panel-head { padding:16px 20px; display:flex; justify-content:space-between; align-items:center; gap:16px; border-bottom:1px solid var(--line); }
+  h2 { margin:0; font-size:14px; font-weight:600; }
+  .panel-head span, .panel-head a { font-size:12px; color:var(--muted); }
+  .canvas { padding:48px 38px; display:grid; place-items:center; min-height:520px; }
+  .reference, .drawing-stage { width:100%; max-width:480px; aspect-ratio:520/505; }
+  .drawing-stage { position:relative; isolation:isolate; }
+  .main-mark { width:100%; }
+  .reference { position:relative; overflow:hidden; background:#fff; }
+  .reference img { position:absolute; width:241.153846%; max-width:none; height:auto; left:-74.038462%; top:-23.762376%; }
+  .reference-canvas { background:#fff; }
+  .reference-overlay { position:absolute; inset:0; z-index:6; pointer-events:none; display:none; opacity:var(--reference-opacity,.5); }
+  body.compare-overlay .reference-overlay, body.compare-diff .reference-overlay { display:block; }
+  body.compare-diff .reference-overlay { opacity:1; mix-blend-mode:difference; }
+  body.compare-diff .main-mark .guides { display:none; }
+  body.compare-overlay .drawing-stage, body.compare-diff .drawing-stage { --paper:#fff; --ink:#202020; }
+  .comparison-help { margin:12px 0 18px; font-size:12px; }
+  .mark { position:relative; aspect-ratio:520/505; isolation:isolate; background:var(--paper); }
+  /* All curved edges below are borders of actual round HTML elements.
+     Polygons provide only straight edges: the base and the chord that cuts each disk. */
+  .base, .arc-cap, .guides { position:absolute; inset:0; }
+  .base { background:var(--ink); }
+  .arc-cap { pointer-events:none; }
+  .disc { position:absolute; display:block; border-radius:50%; aspect-ratio:1; background:var(--ink); }
+  .arc-cap.cut .disc { background:var(--paper); }
+  .mark[data-phase="base"] .arc-cap { display:none; }
+  .mark[data-phase="add"] .arc-cap.cut { display:none; }
+  .guides { z-index:5; overflow:hidden; pointer-events:none; display:none; }
+  body.show-guides .main-mark .guides { display:block; }
+  .guides .disc { background:none; border:1px dashed var(--add); opacity:.5; }
+  .guides .disc.cut { border-color:var(--cut); }
+  .guides .disc.selected { border-style:solid; border-width:1.5px; opacity:1; }
+  .chord { position:absolute; height:1px; transform-origin:0 50%; background:var(--cut); opacity:.55; }
+  .construction-line { position:absolute; height:1px; transform-origin:0 50%; background:#497da6; opacity:.8; }
+  .endpoint { position:absolute; width:4px; height:4px; background:#497da6; border-radius:50%; transform:translate(-50%,-50%); }
+  .joint-guides { position:absolute; inset:0; z-index:7; pointer-events:none; display:none; }
+  body.show-joints .main-mark .joint-guides { display:block; }
+  .joint-guides .construction-line { background:var(--add); opacity:.9; }
+  .joint-guides .endpoint { background:var(--paper); border:1.5px solid var(--add); width:6px; height:6px; }
+  .tuner { display:grid; grid-template-columns:1fr 1.1fr; align-items:center; gap:20px; padding:20px; margin-top:18px; }
+  label { display:block; font-size:12px; color:var(--muted); margin-bottom:8px; }
+  select { width:100%; }
+  .range-row { display:flex; align-items:center; gap:14px; }
+  input[type=range] { width:100%; accent-color:var(--add); }
+  output { min-width:40px; font-size:12px; font-variant-numeric:tabular-nums; }
+  .measure { margin-top:8px; font-size:11px; font-variant-numeric:tabular-nums; }
+  .legend { display:flex; gap:20px; flex-wrap:wrap; padding:0 20px 18px; }
+  .legend span { font-size:12px; color:var(--muted); }
+  .legend b { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; background:var(--add); }
+  .legend .cut-key { background:var(--cut); }
+  .sizes { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+  .size { min-height:152px; padding:16px 20px; display:grid; justify-items:center; gap:16px; }
+  .size p { justify-self:start; font-size:12px; }
+  .size .mark { width:var(--size); }
+  .notes { margin-top:20px; }
+  .motion-section { margin:0 0 40px; scroll-margin-top:24px; }
+  .geometry-heading { font-size:20px; margin:0 0 18px; }
+  .geometry-tools { margin-bottom:14px; }
+  .motion-heading { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom:1px solid var(--line); }
+  .motion-heading h2 { font-size:20px; margin-bottom:6px; }
+  .motion-heading a { color:var(--muted); font-size:12px; white-space:nowrap; }
+  .motion-player { width:100%; max-width:1060px; margin:auto; background:#fff; }
+  .motion-transport { display:flex; align-items:center; gap:18px; padding:18px 24px; border-top:1px solid var(--line); }
+  .motion-buttons { display:flex; gap:8px; flex:none; }
+  .motion-rate { display:flex; align-items:center; gap:8px; margin:0; white-space:nowrap; }
+  .motion-rate select { width:75px; }
+  .motion-seek { flex:1; margin:0; }
+  .motion-time { min-width:90px; color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; }
+  .motion-chapters { display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid var(--line); }
+  .motion-chapters button { border:0; border-radius:0; padding:18px 12px; font-size:13px; }
+  .motion-chapters button span { font-size:10px; opacity:.55; margin-right:10px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .motion-link { color:var(--muted); font-size:13px; padding:10px 6px; }
+  @media(max-width:850px) { .motion-transport { flex-wrap:wrap; gap:12px; padding:14px; } .motion-seek { flex-basis:50%; } .motion-heading { padding:18px; } }
+  @media(max-width:560px) { .motion-heading { display:block; } .motion-heading a { display:inline-block; margin-top:10px; } .motion-chapters button { padding:14px 4px; font-size:11px; } .motion-chapters button span { display:block; margin:0 0 5px; } }
+  body.dark { --paper:#202328; --ink:#f4f4f4; --line:#3a3f45; --muted:#acb3b9; background:#15171a; }
+  @media(max-width:850px) { header { display:block; } .toolbar { margin-top:16px; } .canvas { padding:28px 20px; min-height:0; } .tuner { grid-template-columns:1fr; gap:16px; } }
+  @media(max-width:560px) { main { padding:24px 14px 40px; } h1 { font-size:24px; } .comparison { grid-template-columns:1fr; } .sizes { gap:8px; } .size { padding:12px; } .panel-head { padding:14px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>Logo 设计</h1><p>标准圆、水平线、垂直线和斜线构成黑色区域。原图按同一坐标叠加，直接检查边缘和接点。</p></div>
+    <div class="toolbar">
+      <a class="motion-link" href="./">← 返回首页</a>
+      <button id="theme" type="button" aria-pressed="false">深色背景</button>
+    </div>
+  </header>
+  <section class="panel motion-section" id="logo-motion" aria-label="Logo 设计过程动画">
+    <div class="motion-heading"><div><h2>从几何到标志</h2><p>直线定位、构造圆展开、圆弧成形，最后渐进填黑。可以暂停、重播或点击阶段逐段查看。</p></div><a href="https://www.remotion.dev/docs/player" target="_blank" rel="noopener">Remotion Player · 15 秒</a></div>
+    <div id="logo-animation-root"><p style="padding:32px">正在加载设计过程动画…</p></div>
+  </section>
+  <h2 class="geometry-heading">几何构造与原图对照</h2>
+  <div class="toolbar geometry-tools">
+      <button id="guides" type="button" aria-pressed="false">显示圆与直线</button>
+      <button id="joints" type="button" aria-pressed="false">显示相切接点</button>
+  </div>
+  <div class="steps" aria-label="构造步骤">
+    <button type="button" data-step="base" aria-pressed="false">1 · 直边底形</button>
+    <button type="button" data-step="add" aria-pressed="false">2 · 外圆填色</button>
+    <button type="button" data-step="final" aria-pressed="true">3 · 内圆切除</button>
+  </div>
+  <div class="compare-controls">
+    <div class="compare-modes" aria-label="对比方式">
+      <button type="button" data-compare="plain" aria-pressed="true">纯黑填色</button>
+      <button type="button" data-compare="overlay" aria-pressed="false">原图叠加</button>
+      <button type="button" data-compare="diff" aria-pressed="false">差异检查</button>
+    </div>
+    <div class="opacity-control"><label for="reference-opacity">原图透明度</label><input id="reference-opacity" type="range" min="0" max="100" value="50" disabled><output id="reference-amount" for="reference-opacity">50%</output></div>
+  </div>
+  <section class="comparison" aria-label="同尺寸轮廓对比">
+    <div class="panel">
+      <div class="panel-head"><h2>原图 · 黑色区域</h2><a href="/logo-reference.png" target="_blank" rel="noopener">查看完整设计图</a></div>
+      <div class="canvas reference-canvas"><div class="reference"><img src="/logo-reference.png" alt="原始设计图的 SR 图形局部"></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2 id="phase-title">圆形切割 · 完成填色</h2><span id="circle-count"></span></div>
+      <div class="canvas"><div class="drawing-stage"><div class="mark main-mark" data-phase="final" role="img" aria-label="用真实 CSS 圆形增补和切除形成的 SR 标志"></div><div class="reference reference-overlay" aria-hidden="true"><img src="/logo-reference.png" alt=""></div></div></div>
+    </div>
+  </section>
+  <p id="comparison-help" class="comparison-help" aria-live="polite">纯黑填色：查看完成后的图形。切换“原图叠加”可用透明度滑杆来回核对轮廓。</p>
+  <section class="panel" style="margin-top:18px" aria-label="圆弧微调">
+    <div class="tuner" style="margin-top:0">
+      <div><label for="circle-select">选择参与轮廓的圆</label><select id="circle-select"></select><p id="measurement" class="measure"></p></div>
+      <div><label>几何衔接</label><p id="tangent-status"></p><p class="measure">平滑接点共享切线；笔画尖端和直线转角保留。</p></div>
+    </div>
+    <div class="legend"><span><b></b>绿色圆：补出外凸弧</span><span><b class="cut-key"></b>橙色圆：切出内凹弧</span><span><b style="background:#497da6"></b>蓝色直线：水平边、垂直边和斜边</span><span>构造线与填色使用同一组几何参数</span></div>
+  </section>
+  <section class="sizes" aria-label="小尺寸最终效果">
+    <div class="panel size" style="--size:96px"><p>96 px</p><div class="mark" data-phase="final" aria-hidden="true"></div></div>
+    <div class="panel size" style="--size:48px"><p>48 px</p><div class="mark" data-phase="final" aria-hidden="true"></div></div>
+    <div class="panel size" style="--size:32px"><p>32 px</p><div class="mark" data-phase="final" aria-hidden="true"></div></div>
+  </section>
+  <p class="notes">几何校正版：用相切圆弧调整平滑接点，允许局部轮廓偏离原图。圆弧由标准圆生成，横、竖、斜边由直线生成。</p>
+
+</main>
+<script type="module">
+  // Reference measurement coordinate system: 520 × 505.
+  // Each circle is [centerX, centerY, radius]. No SVG, bitmap mask, or Bézier path is used to render the mark.
+  // Shared geometry also used by the website and Remotion.
+  import {W,H,parts,smoothJoints} from './logo-geometry.js';
+  const circles=[];
+  parts.forEach(part=>{
+    let from=part.start;
+    part.arcs.forEach(arc=>{
+      arc.from=from;
+      if(arc.circle) { arc.id=circles.length; arc.name=part.name; circles.push(arc); }
+      from=arc.to;
+    });
+  });
+  const select=document.getElementById('circle-select');
+  circles.forEach(arc=>select.add(new Option((arc.id+1)+' · '+arc.name+' / '+(arc.add?'外圆补色':'内圆切除'),arc.id)));
+  document.getElementById('circle-count').textContent=circles.length+' 个圆 / '+parts.flatMap(part=>part.arcs).filter(arc=>!arc.circle).length+' 条直线';
+  document.getElementById('tangent-status').textContent=smoothJoints.length+' 个平滑接点 · 切线误差 < 0.001°';
+  let selected=0;
+  const polygon=points=>'polygon('+points.map(p=>(p[0]/W*100)+'% '+(p[1]/H*100)+'%').join(',')+')';
+  const make=(className)=>{const el=document.createElement('div');el.className=className;return el;};
+  function straightLine(from,to,className) {
+    const line=make(className),dx=to[0]-from[0],dy=to[1]-from[1];
+    line.style.left=from[0]/W*100+'%';line.style.top=from[1]/H*100+'%';
+    line.style.width=Math.hypot(dx,dy)/W*100+'%';line.style.transform='rotate('+Math.atan2(dy,dx)+'rad)';
+    return line;
+  }
+  function geometry(arc) {
+    return arc.circle;
+  }
+  function disk(arc,className='disc') {
+    const [cx,cy,r]=geometry(arc),el=make(className);
+    el.style.left=(cx-r)/W*100+'%';el.style.top=(cy-r)/H*100+'%';
+    el.style.width=2*r/W*100+'%';
+    el.dataset.circle=String(arc.id+1);
+    return el;
+  }
+  // Clip a disk by its chord. The surviving circular segment lies on the side
+  // opposite its center. This polygon supplies a straight cut, never a curved edge.
+  function capClip(arc) {
+    const a=arc.from,b=arc.to,[cx,cy]=geometry(arc);
+    const dx=b[0]-a[0],dy=b[1]-a[1];
+    const side=Math.sign(dx*(cy-a[1])-dy*(cx-a[0]));
+    // Overlap the straight join by one source pixel to remove anti-alias seams.
+    // The exposed curved boundary remains the original circle.
+    const distance=p=>-side*(dx*(p[1]-a[1])-dy*(p[0]-a[0]))+Math.hypot(dx,dy);
+    const box=[[0,0],[W,0],[W,H],[0,H]],out=[];
+    for(let i=0;i<box.length;i++) {
+      const p=box[i],q=box[(i+1)%box.length],dp=distance(p),dq=distance(q);
+      if(dp>=0) out.push(p);
+      if((dp>=0)!==(dq>=0)) { const t=dp/(dp-dq);out.push([p[0]+t*(q[0]-p[0]),p[1]+t*(q[1]-p[1])]); }
+    }
+    return polygon(out);
+  }
+  function render() {
+    document.querySelectorAll('.mark').forEach(mark=>{
+      const fragment=document.createDocumentFragment();
+      parts.forEach(part=>{
+        const base=make('base');base.style.clipPath=polygon([part.start,...part.arcs.map(a=>a.to)]);fragment.append(base);
+        for(const addition of [true,false]) part.arcs.filter(a=>a.circle&&a.add===addition).forEach(arc=>{
+          const cap=make('arc-cap '+(arc.add?'add':'cut'));cap.style.clipPath=capClip(arc);cap.append(disk(arc));fragment.append(cap);
+        });
+      });
+      if(mark.classList.contains('main-mark')) {
+        const guides=make('guides');
+        circles.forEach(arc=>guides.append(disk(arc,'disc '+(arc.add?'add':'cut')+(arc.id===selected?' selected':''))));
+        parts.flatMap(part=>part.arcs).filter(arc=>!arc.circle).forEach(arc=>{
+          guides.append(straightLine(arc.from,arc.to,'construction-line'));
+          for(const point of [arc.from,arc.to]) { const dot=make('endpoint');dot.style.left=point[0]/W*100+'%';dot.style.top=point[1]/H*100+'%';guides.append(dot); }
+        });
+        const arc=circles[selected];
+        guides.append(straightLine(arc.from,arc.to,'chord'));fragment.append(guides);
+        const joints=make('joint-guides');
+        smoothJoints.forEach(({point,tangent})=>{
+          joints.append(straightLine([point[0]-tangent[0]*12,point[1]-tangent[1]*12],[point[0]+tangent[0]*12,point[1]+tangent[1]*12],'construction-line'));
+          const dot=make('endpoint');dot.style.left=point[0]/W*100+'%';dot.style.top=point[1]/H*100+'%';joints.append(dot);
+        });
+        fragment.append(joints);
+      }
+      mark.replaceChildren(fragment);
+    });
+    const arc=circles[selected],[cx,cy,r]=geometry(arc);
+    document.getElementById('measurement').textContent='圆心 ('+cx.toFixed(1)+', '+cy.toFixed(1)+') · 半径 '+r.toFixed(1)+' · '+(arc.add?'填色':'切除');
+  }
+  select.addEventListener('change',()=>{selected=Number(select.value);document.body.classList.add('show-guides');document.getElementById('guides').setAttribute('aria-pressed','true');render();});
+  document.querySelectorAll('[data-step]').forEach(button=>button.addEventListener('click',()=>{
+    document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    document.querySelector('.main-mark').dataset.phase=button.dataset.step;
+    document.getElementById('phase-title').textContent={base:'直边底形 · 圆弧端点相连',add:'外圆填色 · 补出外凸弧',final:'圆形切割 · 完成填色'}[button.dataset.step];
+  }));
+  document.querySelectorAll('[data-compare]').forEach(button=>button.addEventListener('click',()=>{
+    const mode=button.dataset.compare;
+    document.querySelectorAll('[data-compare]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    document.body.classList.toggle('compare-overlay',mode==='overlay');
+    document.body.classList.toggle('compare-diff',mode==='diff');
+    document.getElementById('reference-opacity').disabled=mode!=='overlay';
+    document.getElementById('comparison-help').textContent={
+      plain:'纯黑填色：查看完成后的图形。切换“原图叠加”可用透明度滑杆来回核对轮廓。',
+      overlay:'原图叠加：两层共用坐标和比例。0% 为构造结果，100% 为原图；中间值可检查双边、错位和接点。',
+      diff:'差异检查：一致的区域接近黑色，错位边缘变亮。原图自带的虚线、纹理和明暗差也会显示。'
+    }[mode];
+  }));
+  document.getElementById('reference-opacity').addEventListener('input',event=>{
+    document.documentElement.style.setProperty('--reference-opacity',Number(event.target.value)/100);
+    document.getElementById('reference-amount').textContent=event.target.value+'%';
+  });
+  for(const [id,className] of [['guides','show-guides'],['joints','show-joints'],['theme','dark']]) document.getElementById(id).addEventListener('click',event=>{
+    const active=document.body.classList.toggle(className);event.currentTarget.setAttribute('aria-pressed',String(active));
+  });
+  render();
+</script>
+<script src="/logo-animation.js" defer></script>
+</body>
+</html>
