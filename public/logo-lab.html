@@ -81,7 +81,10 @@
   .size p { justify-self:start; font-size:12px; }
   .size .mark { width:var(--size); }
   .notes { margin-top:20px; }
-  .motion-section { margin:0 0 40px; scroll-margin-top:24px; }
+  .motion-section { margin:0 0 20px; scroll-margin-top:24px; }
+  .design-thought { display:flex; align-items:baseline; justify-content:space-between; gap:18px; margin:0 0 40px; padding:22px 28px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .design-thought blockquote { margin:0; font-family:"Songti SC","Noto Serif CJK SC",serif; font-size:clamp(20px,2vw,28px); line-height:1.5; letter-spacing:.025em; }
+  .design-thought figcaption { flex:none; color:var(--muted); font-size:13px; white-space:nowrap; }
   .geometry-heading { font-size:20px; margin:0 0 18px; }
   .geometry-tools { margin-bottom:14px; }
   .motion-heading { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom:1px solid var(--line); }
@@ -100,7 +103,7 @@
   .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
   .motion-link { color:var(--muted); font-size:13px; padding:10px 6px; }
   @media(max-width:850px) { .motion-transport { flex-wrap:wrap; gap:12px; padding:14px; } .motion-seek { flex-basis:50%; } .motion-heading { padding:18px; } }
-  @media(max-width:560px) { .motion-heading { display:block; } .motion-heading a { display:inline-block; margin-top:10px; } .motion-chapters button { padding:14px 4px; font-size:11px; } .motion-chapters button span { display:block; margin:0 0 5px; } }
+  @media(max-width:560px) { .motion-heading { display:block; } .motion-heading a { display:inline-block; margin-top:10px; } .motion-chapters button { padding:14px 4px; font-size:11px; } .motion-chapters button span { display:block; margin:0 0 5px; } .design-thought { display:block; padding:20px 12px; } .design-thought figcaption { margin-top:12px; } }
   body.dark { --paper:#202328; --ink:#f4f4f4; --line:#3a3f45; --muted:#acb3b9; background:#15171a; }
   @media(max-width:850px) { header { display:block; } .toolbar { margin-top:16px; } .canvas { padding:28px 20px; min-height:0; } .tuner { grid-template-columns:1fr; gap:16px; } }
   @media(max-width:560px) { main { padding:24px 14px 40px; } h1 { font-size:24px; } .comparison { grid-template-columns:1fr; } .sizes { gap:8px; } .size { padding:12px; } .panel-head { padding:14px; } }
@@ -119,6 +122,10 @@
     <div class="motion-heading"><div><h2>从几何到标志</h2><p>直线定位、构造圆展开、圆弧成形，最后渐进填黑。可以暂停、重播或点击阶段逐段查看。</p></div><a href="https://www.remotion.dev/docs/player" target="_blank" rel="noopener">Remotion Player · 15 秒</a></div>
     <div id="logo-animation-root"><p style="padding:32px">正在加载设计过程动画…</p></div>
   </section>
+  <figure class="design-thought" aria-label="Logo 设计思想">
+    <blockquote>“直线属于人类，曲线属于上帝。”</blockquote>
+    <figcaption>—— 安东尼·高迪</figcaption>
+  </figure>
   <h2 class="geometry-heading">几何构造与原图对照</h2>
   <div class="toolbar geometry-tools">
       <button id="guides" type="button" aria-pressed="false">显示圆与直线</button>
