@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>硅基源流 · Logo 设计</title>
+<link rel="icon" href="./logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./design-brand.css">
 <style>
   :root { color-scheme:light; --paper:#fff; --ink:#202020; --muted:#72777b; --line:#dce0e2; --add:#168570; --cut:#ce5939; }
   * { box-sizing:border-box; }
@@ -111,10 +113,13 @@
 </head>
 <body>
 <main>
+  <div class="design-brandbar">
+    <a class="design-brand" href="./" aria-label="硅基源流 SiliRoot，返回官网"><img src="./logo-mark.svg" width="42" height="42" alt=""><span class="design-brand-name"><strong>硅基源流</strong><small>SiliRoot</small></span></a>
+    <nav class="design-brandnav" aria-label="设计页面导航"><a href="./">公司首页</a><a href="./logo-lab.html" aria-current="page">Logo 设计</a><a href="./monogram-mvp/index.html">双字母设计工具 ↗</a></nav>
+  </div>
   <header>
     <div><h1>Logo 设计</h1><p>标准圆、水平线、垂直线和斜线构成黑色区域。原图按同一坐标叠加，直接检查边缘和接点。</p></div>
     <div class="toolbar">
-      <a class="motion-link" href="./">← 返回首页</a>
       <button id="theme" type="button" aria-pressed="false">深色背景</button>
     </div>
   </header>
@@ -169,6 +174,11 @@
   </section>
   <p class="notes">几何校正版：用相切圆弧调整平滑接点，允许局部轮廓偏离原图。圆弧由标准圆生成，横、竖、斜边由直线生成。</p>
 
+  <footer class="design-company" aria-label="公司信息">
+    <div><a class="design-brand" href="./" aria-label="硅基源流 SiliRoot，返回官网"><img src="./logo-mark.svg" width="42" height="42" alt="" loading="lazy"><span class="design-brand-name"><strong>硅基源流</strong><small>SiliRoot</small></span></a><p>苏州硅基源流人工智能。以 Agent 特区承接 AI 战略，把试点放进有边界的真实工作。</p></div>
+    <nav class="design-company-links" aria-label="公司相关链接"><a href="./#team">了解团队</a><a href="./#engagement">合作咨询</a><a href="mailto:yzw@imcoders.net">联系我们</a></nav>
+    <p class="design-company-meta">苏州硅基源流人工智能 · 苏州</p>
+  </footer>
 </main>
 <script type="module">
   // Reference measurement coordinate system: 520 × 505.

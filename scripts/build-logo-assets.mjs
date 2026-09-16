@@ -9,6 +9,9 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" vi
 const favicon=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 ${W+48} ${H+48}"><style>svg{fill:#202020}@media(prefers-color-scheme:dark){svg{fill:#f4f4f4}}</style>${paths}</svg>`;
 await writeFile('public/logo-mark.svg',svg);
 await writeFile('public/logo-favicon.svg',favicon);
+const horizontal=`<svg xmlns="http://www.w3.org/2000/svg" width="1420" height="430" viewBox="0 0 1420 430" fill="#202020"><g transform="translate(60 55) scale(${320/H})">${paths}</g><text x="910" y="225" text-anchor="middle" font-family="Songti SC, serif" font-size="178" font-weight="400" letter-spacing="18">硅基源流</text><text x="910" y="360" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="100" font-weight="400" letter-spacing="18">SiliRoot</text></svg>`;
+await writeFile('public/logo-horizontal.svg',horizontal);
+await sharp(Buffer.from(horizontal)).resize({width:2840}).flatten({background:'#fff'}).png().toFile('public/logo-horizontal.png');
 const touchMark=await sharp(Buffer.from(svg)).resize(140,136,{fit:'contain'}).png().toBuffer();
 await sharp({create:{width:180,height:180,channels:4,background:'#fff'}}).composite([{input:touchMark,left:20,top:22}]).png().toFile('public/logo-touch.png');
 const socialMark=await sharp(Buffer.from(svg)).resize({width:600}).png().toBuffer();
@@ -19,4 +22,4 @@ const header=Buffer.alloc(22);
 header.writeUInt16LE(1,2);header.writeUInt16LE(1,4);header[6]=32;header[7]=32;
 header.writeUInt16LE(1,10);header.writeUInt16LE(32,12);header.writeUInt32LE(icon.length,14);header.writeUInt32LE(22,18);
 await writeFile('public/logo-favicon.ico',Buffer.concat([header,icon]));
-console.log('Built geometric logo, favicons, touch icon and sharing image');
+console.log('Built geometric logo, horizontal lockup, favicons, touch icon and sharing image');
