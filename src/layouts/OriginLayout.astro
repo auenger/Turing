@@ -1,0 +1,58 @@
+---
+import '../styles/origin.css';
+const title = '硅基源流 SiliRoot · 让人类与 Agent 共同创造';
+const description = '硅基源流连接人类经验、Agent 能力与产品网络。从真实业务交付出发，构建可协作、可验证、持续演化的智能体生态。';
+const links = [{label:'产品',href:'#products'},{label:'方案',href:'#concept'},{label:'案例',href:'#cases'},{label:'团队',href:'#team'},{label:'社区',href:'https://www.agentszone.ai/'},{label:'交付启动',href:'#engagement'}];
+---
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#101110"/><title>{title}</title><meta name="description" content={description}/><link rel="canonical" href={Astro.site}/><link rel="icon" href="/logo-favicon.svg" type="image/svg+xml"/><link rel="apple-touch-icon" href="/logo-touch.png"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:image" content={new URL('/logo-social.png',Astro.site).href}/><meta name="twitter:card" content="summary_large_image"/><script is:inline>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('siliroot-theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f5f6f3' : '#101110');
+      })();
+    </script></head><body>
+<button class="theme-toggle" type="button" aria-label="切换亮暗主题" aria-pressed="false" aria-describedby="theme-hint"><span class="theme-corner" aria-hidden="true"></span><span class="theme-fold" aria-hidden="true"></span><span class="theme-hint" id="theme-hint">翻到浅色页</span></button>
+<a class="skip" href="#main">跳转到正文</a>
+<header class="site-header"><div class="shell header-inner"><a class="brand" href="#top" aria-label="硅基源流首页"><img src="/siliroot-mark.svg" width="34" height="34" alt=""/><span>硅基源流<small>SILIROOT</small></span></a><nav class="desktop-nav" aria-label="主导航">{links.map(l=><a href={l.href}>{l.label}</a>)}</nav><a class="header-cta" href="mailto:machi@siliroot.com">聊聊你的业务 <span>↗</span></a><button class="menu-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">菜单 ＋</button></div><nav id="mobile-nav" aria-label="移动导航" hidden>{links.map(l=><a href={l.href}>{l.label}</a>)}</nav></header>
+<main id="main"><slot/></main>
+<footer class="shell footer"><div><a class="brand" href="#top"><img src="/siliroot-mark.svg" width="30" height="30" alt=""/><span>硅基源流<small>SILIROOT</small></span></a><p>人类的经验，硅基的能力。<br/>共同创造，持续演化。</p></div><div><h3>产品与服务</h3><a href="#team-transformation">研发团队转型</a><a href="#agent-delivery">Agent 落地交付</a><a href="#expert-ecosystem">业务专家生态</a><a href="https://silieco.com/">SiliEco Agent Work OS ↗</a></div><div><h3>连接我们</h3><a href="#team">创始团队</a><a href="https://www.agentszone.ai/">Agent 特区社区 ↗</a><a href="mailto:machi@siliroot.com">machi@siliroot.com ↗</a><a href="/logo-lab.html">Logo 设计</a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} 苏州硅基源流人工智能</span><span>苏州 · HUMAN × SILICON</span></div></footer>
+<script>
+const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
+const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+let explicitTheme = false;
+try { explicitTheme = ['light', 'dark'].includes(localStorage.getItem('siliroot-theme') || ''); } catch {}
+function setTheme(theme: string) {
+  document.documentElement.dataset.theme = theme;
+  themeButton?.setAttribute('aria-pressed', String(theme === 'dark'));
+  const hint = document.querySelector('.theme-hint');
+  if (hint) hint.textContent = theme === 'dark' ? '翻到浅色页' : '翻到深色页';
+  themeButton?.setAttribute('aria-label', theme === 'dark' ? '切换到亮色主题' : '切换到暗色主题');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f5f6f3' : '#101110');
+}
+setTheme(document.documentElement.dataset.theme || 'dark');
+let themeTransitionTimer: ReturnType<typeof setTimeout>;
+themeButton?.addEventListener('click', () => {
+  clearTimeout(themeTransitionTimer);
+  document.documentElement.classList.add('theme-changing');
+  themeButton.classList.remove('is-turning');
+  void themeButton.offsetWidth;
+  themeButton.classList.add('is-turning');
+  themeTransitionTimer = setTimeout(() => { document.documentElement.classList.remove('theme-changing'); themeButton.classList.remove('is-turning'); }, 520);
+  const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  explicitTheme = true;
+  setTheme(theme);
+  try { localStorage.setItem('siliroot-theme', theme); } catch {}
+});
+systemTheme.addEventListener('change', e => { if (!explicitTheme) setTheme(e.matches ? 'dark' : 'light'); });
+const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle');
+const menu=document.querySelector<HTMLElement>('#mobile-nav');
+function closeMenu(){if(!menu||!toggle)return;menu.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.textContent='菜单 ＋';}
+toggle?.addEventListener('click',()=>{if(!menu)return;const open=menu.hidden;menu.hidden=!open;toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'关闭 −':'菜单 ＋';});
+menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu&&!menu.hidden){closeMenu();toggle?.focus();}});
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('entered');observer.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('[data-enter]').forEach(el=>observer.observe(el));}
+document.querySelectorAll<HTMLDetailsElement>('.case-detail').forEach(d=>{if(location.hash==='#'+d.id)d.open=true;});
+window.addEventListener('hashchange',()=>{const el=document.getElementById(location.hash.slice(1));if(el instanceof HTMLDetailsElement)el.open=true;});
+</script></body></html>
